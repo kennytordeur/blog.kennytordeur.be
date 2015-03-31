@@ -1,5 +1,6 @@
 ---
 layout: post
+author: Kenny Tordeur
 title: "Submitting to different controller actions in ASP.NET MVC"
 date: 2015-03-09 09:14:00 +0100
 comments: true
@@ -40,4 +41,4 @@ alias: ["/post/Submitting-to-different-controller-actions-in-ASPNET-MVC", "/post
     <span class="kwrd">&lt;/</span><span class="html">form</span><span class="kwrd">&gt;</span>
  <span class="kwrd">&lt;/</span><span class="html">body</span><span class="kwrd">&gt;</span>
 <span class="kwrd">&lt;/</span><span class="html">html</span><span class="kwrd">&gt;</span></pre>
-<p>The downside of this solution, is that it isn&rsquo;t supported by all browsers.<a href="/images/image_11.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; display: block; float: none; margin-left: auto; margin-right: auto; padding-top: 0px; border-width: 0px;" title="image" src="/images/image_thumb_11.png" alt="image" width="765" height="109" border="0" /></a></p>
+<p>The downside of this solution, is that it isn&rsquo;t supported by all browsers.<a href="{{ '/images/image_11.png' | prepend: site.baseurl | prepend: site.url }}"><img style="background-image: none; padding-left: 0px; padding-right: 0px; display: block; float: none; margin-left: auto; margin-right: auto; padding-top: 0px; border-width: 0px;" title="image" src="{{ '/images/image_thumb_11.png' | prepend: site.baseurl | prepend: site.url }}" alt="image" width="765" height="109" border="0" /></a></p>
