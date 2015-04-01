@@ -28,7 +28,7 @@ ASP.NET VNext introduced a new syntax for defining constraints:</p>
 
 <span style="color: #c0504d; font-size: 12pt">parameter </span>will contain the name of the parameter you want to constraint and <span style="color: #c0504d; font-size: 12pt">constraint </span>will specify with constraint will be applied.
 
-![constraints](/images/2014-07-11-aspnet-vnext-routing-constraints-and-custom-constraints/constraints.png)
+![constraints](http://blog.kennytordeur.be/images/2014-07-11-aspnet-vnext-routing-constraints-and-custom-constraints/constraints.png)
 
 For a full overview of the available constraints you can take a look at [Microsoft.AspNet.Routing/Constraints](htpps://github.com/aspnet/Routing/tree/dev/src/Microsoft.AspNet.Routing/Constraints).
 
