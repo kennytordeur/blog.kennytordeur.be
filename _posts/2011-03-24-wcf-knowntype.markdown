@@ -13,7 +13,7 @@ In object-oriented programming the concept of polymorphism is frequently used. T
 
 This is the WCF service that we are going to use in this example.
 
-```C#
+```csharp
     [ServiceContract(
         Namespace="http://localhost/WeatherForeCast"
         ,Name="WeatherForeCastService")]
