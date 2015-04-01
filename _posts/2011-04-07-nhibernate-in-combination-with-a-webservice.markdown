@@ -8,135 +8,349 @@ categories: ["blog", "archives"]
 tags: ["NHibernate"]
 alias: ["/post/NHibernate-in-combination-with-a-webservice", "/post/nhibernate-in-combination-with-a-webservice"]
 ---
-<!-- more -->
-{% include imported_disclaimer.html %}
-<p>In this post i &lsquo;ill try to explain how you can make NHibernate interact with a webservice to fill in a certain object.</p>
-<h2>&nbsp;</h2>
-<h2>&nbsp;</h2>
-<h2>Current situation</h2>
-<p>This is the current situation that we have.</p>
-<p>&nbsp; <a href="http://lh5.ggpht.com/_VX53QHr178k/TZ1bw6TcipI/AAAAAAAAADw/e428AKBY6t4/s1600-h/situation%5B6%5D.gif"><img style="display: block; float: none; margin-left: auto; margin-right: auto; border-width: 0px;" title="Current situation" src="http://lh3.ggpht.com/_VX53QHr178k/TZ1bxWe8lrI/AAAAAAAAAD0/LdIA9sjseSs/situation_thumb%5B4%5D.gif?imgmax=800" alt="Current situation" width="662" height="333" border="0" /></a></p>
-<p>&nbsp;</p>
-<p>We have a webservice called &ldquo;Marial State service&rdquo;. This service is responsible for all marial states available. <br />This service has only 2 methods:</p>
-<ul>
-<li>GetAll()
-<ul>
-<li>Gives all the available marial states</li>
-</ul>
-</li>
-<li>GetById(Int32 id)
-<ul>
-<li>Gives a specific marial state by it&rsquo;s id</li>
-</ul>
-</li>
-</ul>
-<p>The client is an application that has it&rsquo;s own database and uses NHibernate as ORM. The client is responsible for creating/updating/deleting persons in his database. So in the database we find a table called &ldquo;Person&rdquo; with contains all the data.</p>
-<p>&nbsp;<a href="http://lh5.ggpht.com/_VX53QHr178k/TZ1bxh314KI/AAAAAAAAAD4/rri4AjZts5Y/s1600-h/databaseschema%5B3%5D.gif"><img style="display: block; float: none; margin-left: auto; margin-right: auto; border-width: 0px;" title="Person Table" src="http://lh4.ggpht.com/_VX53QHr178k/TZ1bxyDfSGI/AAAAAAAAAD8/wO366AuK-xQ/databaseschema_thumb%5B1%5D.gif?imgmax=800" alt="Person Table" width="442" height="151" border="0" /></a></p>
-<p>As you can see, the person, has a marial state which comes from the MarialState service. <br />For those who noticed, yes i am using an Access as database. <a href="https://nhcontrib.svn.sourceforge.net/svnroot/nhcontrib/trunk/src/NHibernate.JetDriver/">Here</a> you can find the needed DLL.</p>
-<h2>The MarialState service</h2>
-<p>I created 2 new projects in visual studio. One which contains the model off the service.</p>
-<p>&nbsp;<a href="http://lh3.ggpht.com/_VX53QHr178k/TZ1byTv8wfI/AAAAAAAAAEA/ZupvSv4LugY/s1600-h/webserviceModel%5B5%5D.gif"><img style="display: block; float: none; margin-left: auto; margin-right: auto; border-width: 0px;" title="Webservice Model" src="http://lh3.ggpht.com/_VX53QHr178k/TZ1by9DG5OI/AAAAAAAAAEE/u9AXF45TUHQ/webserviceModel_thumb%5B3%5D.gif?imgmax=800" alt="Webservice Model" width="442" height="125" border="0" /></a></p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:af3639c4-0b26-4e58-9873-85bc60351288" class="wlWriterSmartContent" style="display: block; float: none; margin-left: auto; width: 412px; margin-right: auto; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">namespace</span> NHibernateWebservices.WebServiceProxy.Model<br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">MarialState</span><br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #2b91af;">Int32</span> Id { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #2b91af;">String</span> Description { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp; }<br />}</div>
-</div>
-</div>
-<p><br />And another project for the service logic. As you can see this isn&rsquo;t a real service. I am mocking it.</p>
-<p>&nbsp;<a href="http://lh5.ggpht.com/_VX53QHr178k/TZ1bzPp_KhI/AAAAAAAAAEI/ev-SWM4ldDU/s1600-h/webserviceproxy%5B3%5D.gif"><img style="display: block; float: none; margin-left: auto; margin-right: auto; border-width: 0px;" title="Webservice Logic" src="http://lh5.ggpht.com/_VX53QHr178k/TZ1bzbI2b7I/AAAAAAAAAEM/TKCgkgdL5rE/webserviceproxy_thumb%5B1%5D.gif?imgmax=800" alt="Webservice Logic" width="442" height="96" border="0" /></a></p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:549f8ef2-6edc-43e6-bcc6-8d4eb5e24858" class="wlWriterSmartContent" style="display: block; float: none; margin-left: auto; width: 520px; margin-right: auto; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">namespace</span> NHibernateWebservices.WebServiceProxy<br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">MarialState</span><br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #2b91af;">List</span>&lt;Model.<span style="color: #2b91af;">MarialState</span>&gt; GetAll()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">new</span> <span style="color: #2b91af;">List</span>&lt;Model.<span style="color: #2b91af;">MarialState</span>&gt; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">new</span> Model.<span style="color: #2b91af;">MarialState</span> { Id = 1, Description = <span style="color: #a31515;">"Single"}</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ,<span style="color: #0000ff;">new</span> Model.<span style="color: #2b91af;">MarialState</span> { Id = 2, Description = <span style="color: #a31515;">"Married"}</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ,<span style="color: #0000ff;">new</span> Model.<span style="color: #2b91af;">MarialState</span> { Id = 3, Description = <span style="color: #a31515;">"widower"}</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> Model.<span style="color: #2b91af;">MarialState</span> GetById(<span style="color: #2b91af;">Int32</span> id)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> GetAll().SingleOrDefault(m =&gt; m.Id == id);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</div>
-</div>
-</div>
-<h2>The client</h2>
-<p>At client side the we created a business object&nbsp; called &ldquo;Person&rdquo; which will map at the Person table in it&rsquo;s database.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:47f7099d-5dc8-4117-99f6-0e549202942b" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">Person</span><br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">Int32</span> Id { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">String</span> FullName { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">Int32</span> MarialStateId { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />}</div>
-</div>
-</div>
-<p>This is the mapping file for the &ldquo;Person&rdquo; entity.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:ab450466-26d5-40fb-b88c-cd2f16a033e0" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">&lt;?</span><span style="color: #a31515;">xml</span><span style="color: #ff0000;">version</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">1.0</span>"<span style="color: #0000ff;"> ?&gt;</span><br /><span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">hibernate-mapping</span><span style="color: #ff0000;">xmlns</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">urn:nhibernate-mapping-2.2</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">class</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">NHibernateWebservices.Model.Person, NHibernateWebservices.Model</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">table</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Person</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">id</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Id</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Id</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&nbsp; </span><span style="color: #ff0000;">unsaved-value</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">0</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">generator</span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">increment</span>"<span style="color: #0000ff;"> /&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">id</span><span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">property</span><span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">FullName</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">FullName</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">type</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">String</span>"<span style="color: #0000ff;"> /&gt;</span><br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">property</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialStateId</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialStateId</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">type</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">int</span>"<span style="color: #0000ff;">/&gt;</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp; <span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">class</span><span style="color: #0000ff;">&gt;</span><br /><span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">hibernate-mapping</span><span style="color: #0000ff;">&gt;</span></div>
-</div>
-</div>
-<h2>&nbsp;</h2>
-<h2>Now How to get the data?</h2>
-<h3>First try</h3>
-<p>The most easy way to get the MarialState entity would be to write something like this.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:90a47eb9-8420-4afd-b87d-357b4b74c63a" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">Person</span><br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">Int32</span> Id { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">String</span> FullName { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">private</span> <span style="color: #2b91af;">Int32</span> marialStateId;<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">Int32</span> MarialStateId<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> marialStateId;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">set</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; marialStateId = <span style="color: #0000ff;">value</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> MarialState<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> WebServiceProxy.<span style="color: #2b91af;">MarialState</span>.GetById(marialStateId);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">set</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; marialStateId = (<span style="color: #0000ff;">null</span> == <span style="color: #0000ff;">value</span>) ? (0) : (<span style="color: #0000ff;">value</span>.Id);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />&nbsp;&nbsp;&nbsp; }<br />}</div>
-</div>
-</div>
-<p>This solution will work, but I can see several things that I am not happy with. First of all it&rsquo;s a lot off extra code. In this case the &ldquo;Person&rdquo; entity is very simple, but what if it was complex and you needed to get other data from a service, you would be writing a lot of code looking like this.</p>
-<p>Second, in this approach you need to create a reference between the WebServiceProxy and the business Model of the client. At this point the business Model of the client is also responsible to fill it&rsquo;s own data instead of only validating against business rules.</p>
-<h3>Using NHibernate IUserType</h3>
-<p>The ideal situation would that we ask NHibernate to give use a &ldquo;Person&rdquo; and that everything, including MarialState object, would be filled automatically. You can do this if you create a new NHibernate IUserType object. IUserType is an interface which allows you to plug in into the NHibernate mapping process and handle it your self.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:5f448365-109b-4af4-8c08-7efea0457969" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">MarialStateUserType</span> : <span style="color: #2b91af;">IUserType</span><br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> Assemble(<span style="color: #0000ff;">object</span> cached, <span style="color: #0000ff;">object</span> owner)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> DeepCopy(cached);<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> DeepCopy(<span style="color: #0000ff;">object</span> value)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> value;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> Disassemble(<span style="color: #0000ff;">object</span> value)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> DeepCopy(value);<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">int</span> GetHashCode(<span style="color: #0000ff;">object</span> x)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> x.GetHashCode();<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">bool</span> IsMutable<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span> { <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">true</span>; }<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> NullSafeGet(System.Data.<span style="color: #2b91af;">IDataReader</span> rs, <span style="color: #0000ff;">string</span>[] names, <span style="color: #0000ff;">object</span> owner)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">object</span> obj = <span style="color: #2b91af;">NHibernateUtil</span>.Int32.NullSafeGet(rs, names[0]);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> marialState = <span style="color: #0000ff;">null</span>;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">null</span> != obj)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; marialState = WebServiceProxy.<span style="color: #2b91af;">MarialState</span>.GetById(<span style="color: #2b91af;">Convert</span>.ToInt32(obj));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> marialState;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span> NullSafeSet(System.Data.<span style="color: #2b91af;">IDbCommand</span> cmd, <span style="color: #0000ff;">object</span> value, <span style="color: #0000ff;">int</span> index)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> marialState = value <span style="color: #0000ff;">as</span> WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span>;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">var</span> parameter = (<span style="color: #2b91af;">IDataParameter</span>)cmd.Parameters[index];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">null</span> == marialState)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parameter.Value = <span style="color: #2b91af;">DBNull</span>.Value;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">else</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parameter.Value = marialState.Id;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #2b91af;">Type</span> ReturnedType<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span> { <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">typeof</span>(WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span>); }<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #2b91af;">SqlType</span>[] SqlTypes<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span> { <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">new</span> <span style="color: #2b91af;">SqlType</span>[] { <span style="color: #2b91af;">NHibernateUtil</span>.Int32.SqlType }; }<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> Replace(<span style="color: #0000ff;">object</span> original, <span style="color: #0000ff;">object</span> target, <span style="color: #0000ff;">object</span> owner)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> original;<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">new</span> <span style="color: #0000ff;">bool</span> Equals(<span style="color: #0000ff;">object</span> x, <span style="color: #0000ff;">object</span> y)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">object</span>.ReferenceEquals(x, y)) <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">true</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (x == <span style="color: #0000ff;">null</span> || y == <span style="color: #0000ff;">null</span>) <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">false</span>;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> x.Equals(y);<br />&nbsp;&nbsp;&nbsp; }<br />}</div>
-</div>
-</div>
-<p>This it the custom IUsertype that is created for the MarialState entity. In this example, these are the most interesting parts of code:</p>
-<ul>
-<li>ReturnedType</li>
-<li>SqlTypes</li>
-<li>NullSafeGet</li>
-<li>NullSafeSet</li>
-</ul>
-<h4>&nbsp;</h4>
-<h4>ReturnedType/SqlTypes properties</h4>
-<p>The ReturnedType and SqlTypes properties tells NHibernate which type to expect. The ReturnedType property contains the type of object that this IUsertype has to return. In our case it is a MarialState object.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:cc69e8ae-b0d5-4e64-9578-b67242ff2ef3" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #2b91af;">Type</span> ReturnedType<br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span> { <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">typeof</span>(WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span>); }<br />}</div>
-</div>
-</div>
-<p>The SqlTypes property tells how the object is mapped in the database. Here the MarialState object is mapped to a numerical column.</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:7598dab5-63a7-4297-8461-af396f69337a" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #2b91af;">SqlType</span>[] SqlTypes<br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">get</span> { <span style="color: #0000ff;">return</span> <span style="color: #0000ff;">new</span> <span style="color: #2b91af;">SqlType</span>[] { <span style="color: #2b91af;">NHibernateUtil</span>.Int32.SqlType }; }<br />}</div>
-</div>
-</div>
-<p>&nbsp;</p>
-<h4>NullSafeGet/NullSafeSet methods</h4>
-<p>The NullSafeSet method is called when we want to save/update our object. In our case, the parameter &rdquo;value&rdquo; will contain our MarialState entity. The parameter &ldquo;cmd&rdquo; will contain the command that is used to update/insert the &ldquo;Person&rdquo; entity in the database.</p>
-<p>What we now have to do, is to insert the Id of the MarialState entity in the command at the index place. We know the index because it is passed to the NullSafeSet method. If the MarialState entity is empty, we insert the DBNull value.</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:542e9f36-b96b-47cb-91a3-039d134e9219" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span> NullSafeSet(System.Data.<span style="color: #2b91af;">IDbCommand</span> cmd, <span style="color: #0000ff;">object</span> value, <span style="color: #0000ff;">int</span> index)<br />{<br />&nbsp;&nbsp;&nbsp; WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> marialState = value <span style="color: #0000ff;">as</span> WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span>;<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">var</span> parameter = (<span style="color: #2b91af;">IDataParameter</span>)cmd.Parameters[index];<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">null</span> == marialState)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parameter.Value = <span style="color: #2b91af;">DBNull</span>.Value;<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">else</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parameter.Value = marialState.Id;<br />}</div>
-</div>
-</div>
-<p>The NullSafeSet method is called when we want to extract the data from the database. This method will return a MarialState entity. As you can see, this method has a IDataReader object as parameter. From this IDataReader we have to extract the MarialStateId column and use it&lsquo;s value to get the MarialState entity from the MarialState service. We also do a check to see if the value isn&rsquo;t null because it could be <em>NULL</em> in the database.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:860cf6f7-adb0-4f28-9a9c-da316ea43742" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> NullSafeGet(System.Data.<span style="color: #2b91af;">IDataReader</span> rs, <span style="color: #0000ff;">string</span>[] names, <span style="color: #0000ff;">object</span> owner)<br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">object</span> obj = <span style="color: #2b91af;">NHibernateUtil</span>.Int32.NullSafeGet(rs, names[0]);<br />&nbsp;&nbsp;&nbsp; WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> marialState = <span style="color: #0000ff;">null</span>;<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">null</span> != obj)<br />&nbsp;&nbsp;&nbsp; {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; marialState = WebServiceProxy.<span style="color: #2b91af;">MarialState</span>.GetById(<span style="color: #2b91af;">Convert</span>.ToInt32(obj));<br />&nbsp;&nbsp;&nbsp; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">return</span> marialState;<br />}</div>
-</div>
-</div>
-<h4>&nbsp;</h4>
-<h4>Putting the pieces together</h4>
-<p>Now that everything is in place, we can start to glue it together. First of all, we can change the &ldquo;Person&rdquo; entity at the client. The property MarialStateId can now be replaced by the MarialState property. The class looks a lot cleaner this way.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f94f1093-f60d-4990-8285-33931bcf901f" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">Person</span><br />{<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">Int32</span> Id { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> <span style="color: #2b91af;">String</span> FullName { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">virtual</span> WebServiceProxy.Model.<span style="color: #2b91af;">MarialState</span> MarialState { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span>; }<br />}</div>
-</div>
-</div>
-<p>Next in line is to change the mapping file for the &ldquo;Person&rdquo; entity. In this file we are going to make use of the MarialStateUserType that we created.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:d48323d9-04e5-4f6c-8c45-09ba88d465b2" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">&lt;?</span><span style="color: #a31515;">xml</span><span style="color: #ff0000;">version</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">1.0</span>"<span style="color: #0000ff;"> ?&gt;</span><br /><span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">hibernate-mapping</span><span style="color: #ff0000;">xmlns</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">urn:nhibernate-mapping-2.2</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">class</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">NHibernateWebservices.Model.Person, NHibernateWebservices.Model</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">table</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Person</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">id</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Id</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">Id</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&nbsp; </span><span style="color: #ff0000;">unsaved-value</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">0</span>"<span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">generator</span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">increment</span>"<span style="color: #0000ff;"> /&gt;</span><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">id</span><span style="color: #0000ff;">&gt;</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">property</span><span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">FullName</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">FullName</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">type</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">String</span>"<span style="color: #0000ff;"> /&gt;</span><br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">property</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialState</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialStateId</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">type</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">NHibernateWebservices.NHibernateUserType.MarialStateUserType, NHibernateWebservices</span>"<span style="color: #0000ff;">/&gt;</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp; <span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">class</span><span style="color: #0000ff;">&gt;</span><br /><span style="color: #0000ff;">&lt;/</span><span style="color: #a31515;">hibernate-mapping</span><span style="color: #0000ff;">&gt;</span></div>
-</div>
-</div>
-<p>If we run the client and get a &ldquo;Person&rdquo; from the database, the MarialState will be filled automatically be NHibernate.</p>
-<h2>What about the performance?</h2>
-<p>If you have some performance problems, you can always but lazy loading on the MarialState property. This way we will only go to the service if we use the MarialState property.</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:57648c08-c3bc-48a1-9525-dde187daaac7" class="wlWriterSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div class="le-pavsc-container">
-<div style="padding-right: 5px; padding-left: 5px; padding-bottom: 2px; overflow: auto; padding-top: 2px; white-space: nowrap; background-color: #ffffff;"><span style="color: #0000ff;">&lt;</span><span style="color: #a31515;">property</span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialState</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">column</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">MarialStateId</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">lazy</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">true</span>"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">type</span><span style="color: #0000ff;">=</span>"<span style="color: #0000ff;">NHibernateWebservices.NHibernateUserType.MarialStateUserType, NHibernateWebservices</span>"<span style="color: #0000ff;">/&gt;</span></div>
-</div>
-</div>
+
+In this post i'ill try to explain how you can make NHibernate interact with a webservice to fill in a certain object.
+##Current situation##
+
+This is the current situation that we have.
+
+![Current situation](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/situation.gif)
+
+We have a webservice called "Marial State service". This service is responsible for all marial states available. This service has only 2 methods:
+
+* GetAll()
+  * Gives all the available marial states
+* GetById(Int32 id)
+  * Gives a specific marial state by it's id
+
+
+The client is an application that has it's own database and uses NHibernate as ORM. The client is responsible for creating/updating/deleting persons in his database. So in the database we find a table called "Person" with contains all the data.
+
+![database schema](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/database.gif)
+
+As you can see, the person, has a marial state which comes from the MarialState service.
+For those who noticed, yes i am using an Access as database. [Here](https://nhcontrib.svn.sourceforge.net/svnroot/nhcontrib/trunk/src/NHibernate.JetDriver/) you can find the needed DLL.
+
+##The MarialState service##
+I created 2 new projects in visual studio. One which contains the model off the service.
+
+![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceModel.gif)
+
+```charp
+namespace NHibernateWebservices.WebServiceProxy.Model
+{
+    public class MarialState
+    {
+        public Int32 Id { get; set; }
+        public String Description { get; set; }
+    }
+}
+```
+
+And another project for the service logic. As you can see this isn't a real service. I am mocking it.
+![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceproxy.gif)
+
+```charp
+namespace NHibernateWebservices.WebServiceProxy
+{
+    public static class MarialState
+    {
+        public static List<Model.MarialState> GetAll()
+        {
+            return new List<Model.MarialState>
+                                {
+                                    new Model.MarialState { Id = 1, Description = "Single"}
+                                    ,new Model.MarialState { Id = 2, Description = "Married"}
+                                    ,new Model.MarialState { Id = 3, Description = "widower"}
+                                };
+        }
+        public static Model.MarialState GetById(Int32 id)
+        {
+            return GetAll().SingleOrDefault(m => m.Id == id);
+        }
+    }
+}
+```
+
+##The client##
+
+At client side the we created a business object called "Person" which will map at the Person table in it's database.
+
+```csharp
+public class Person
+{
+    public virtual Int32 Id { get; set; }
+    public virtual String FullName { get; set; }
+    public virtual Int32 MarialStateId { get; set; }
+}
+```
+
+This is the mapping file for the "Person" entity.
+
+```xml
+<?xmlversion="1.0" ?>
+<hibernate-mappingxmlns="urn:nhibernate-mapping-2.2">
+    <classname="NHibernateWebservices.Model.Person, NHibernateWebservices.Model"
+         table="Person">
+    <idname="Id"
+        column="Id"
+              unsaved-value="0">
+      <generatorclass="increment" />
+    </id>
+   
+    <propertycolumn="FullName"
+              name="FullName"
+              type="String" />
+
+    <propertyname="MarialStateId"
+             column="MarialStateId"
+             type="int"/>
+   
+  </class>
+</hibernate-mapping>
+```
+
+
+##Now How to get the data?##
+
+
+###First try###
+
+
+The most easy way to get the MarialState entity would be to write something like this.
+
+
+```csharp
+public class Person
+{
+    public virtual Int32 Id { get; set; }
+    public virtual String FullName { get; set; }      
+
+    private Int32 marialStateId;
+    public virtual Int32 MarialStateId
+    {
+        get
+        {
+            return marialStateId;
+        }
+        set
+        {
+            marialStateId = value;
+        }
+    }
+
+    public virtual WebServiceProxy.Model.MarialState MarialState
+    {
+        get
+        {
+            return WebServiceProxy.MarialState.GetById(marialStateId);
+        }
+        set
+        {
+            marialStateId = (null == value) ? (0) : (value.Id);
+        }
+    }
+}
+```
+
+This solution will work, but I can see several things that I am not happy with. First of all it's a lot off extra code. In this case the "Person" entity is very simple, but what if it was complex and you needed to get other data from a service, you would be writing a lot of code looking like this.
+
+
+Second, in this approach you need to create a reference between the WebServiceProxy and the business Model of the client. At this point the business Model of the client is also responsible to fill it's own data instead of only validating against business rules.
+
+
+###Using NHibernate IUserType###
+
+The ideal situation would that we ask NHibernate to give use a "Person" and that everything, including MarialState object, would be filled automatically. You can do this if you create a new NHibernate IUserType object. IUserType is an interface which allows you to plug in into the NHibernate mapping process and handle it your self.
+
+```csharp
+public class MarialStateUserType : IUserType
+{
+    public object Assemble(object cached, object owner)
+    {
+        return DeepCopy(cached);
+    }
+
+    public object DeepCopy(object value)
+    {
+        return value;
+    }
+
+    public object Disassemble(object value)
+    {
+        return DeepCopy(value);
+    }
+
+    public int GetHashCode(object x)
+    {
+        return x.GetHashCode();
+    }
+
+    public bool IsMutable
+    {
+        get { return true; }
+    }
+
+    public object NullSafeGet(System.Data.IDataReader rs, string[] names, object owner)
+    {
+        object obj = NHibernateUtil.Int32.NullSafeGet(rs, names[0]);
+        WebServiceProxy.Model.MarialState marialState = null;
+
+        if (null != obj)
+        {
+            marialState = WebServiceProxy.MarialState.GetById(Convert.ToInt32(obj));
+        }
+
+        return marialState;
+    }
+
+    public void NullSafeSet(System.Data.IDbCommand cmd, object value, int index)
+    {
+        WebServiceProxy.Model.MarialState marialState = value as WebServiceProxy.Model.MarialState;
+
+        var parameter = (IDataParameter)cmd.Parameters[index];
+        if (null == marialState)
+            parameter.Value = DBNull.Value;
+        else
+            parameter.Value = marialState.Id;
+    }
+
+    public Type ReturnedType
+    {
+        get { return typeof(WebServiceProxy.Model.MarialState); }
+    }
+
+    public SqlType[] SqlTypes
+    {
+        get { return new SqlType[] { NHibernateUtil.Int32.SqlType }; }
+    }
+
+    public object Replace(object original, object target, object owner)
+    {
+        return original;
+    }
+
+    public new bool Equals(object x, object y)
+    {
+        if (object.ReferenceEquals(x, y)) return true;
+        if (x == null || y == null) return false;
+        return x.Equals(y);
+    }
+}
+
+```
+
+This it the custom IUsertype that is created for the MarialState entity. In this example, these are the most interesting parts of code:
+
+* ReturnedType
+* SqlTypes
+* NullSafeGet
+* NullSafeSet
+
+####ReturnedType/SqlTypes properties####
+
+
+The ReturnedType and SqlTypes properties tells NHibernate which type to expect. The ReturnedType property contains the type of object that this IUsertype has to return. In our case it is a MarialState object.
+```csharp
+public Type ReturnedType
+{
+    get { return typeof(WebServiceProxy.Model.MarialState); }
+}
+```
+
+The SqlTypes property tells how the object is mapped in the database. Here the MarialState object is mapped to a numerical column.
+
+```csharp
+public SqlType[] SqlTypes
+{
+    get { return new SqlType[] { NHibernateUtil.Int32.SqlType }; }
+}
+```
+
+####NullSafeGet/NullSafeSet methods####
+
+The NullSafeSet method is called when we want to save/update our object. In our case, the parameter "value" will contain our MarialState entity. The parameter "cmd" will contain the command that is used to update/insert the "Person" entity in the database.
+
+
+What we now have to do, is to insert the Id of the MarialState entity in the command at the index place. We know the index because it is passed to the NullSafeSet method. If the MarialState entity is empty, we insert the DBNull value.
+
+```csharp
+public void NullSafeSet(System.Data.IDbCommand cmd, object value, int index)
+{
+    WebServiceProxy.Model.MarialState marialState = value as WebServiceProxy.Model.MarialState;
+
+    var parameter = (IDataParameter)cmd.Parameters[index];
+    if (null == marialState)
+        parameter.Value = DBNull.Value;
+    else
+        parameter.Value = marialState.Id;
+}
+```
+
+The NullSafeSet method is called when we want to extract the data from the database. This method will return a MarialState entity. As you can see, this method has a IDataReader object as parameter. From this IDataReader we have to extract the MarialStateId column and use it's value to get the MarialState entity from the MarialState service. We also do a check to see if the value isn't null because it could be *NULL* in the database.
+
+```csharp
+public object NullSafeGet(System.Data.IDataReader rs, string[] names, object owner)
+{
+    object obj = NHibernateUtil.Int32.NullSafeGet(rs, names[0]);
+    WebServiceProxy.Model.MarialState marialState = null;
+
+    if (null != obj)
+    {
+        marialState = WebServiceProxy.MarialState.GetById(Convert.ToInt32(obj));
+    }
+
+    return marialState;
+}
+```
+
+####Putting the pieces together####
+Now that everything is in place, we can start to glue it together. First of all, we can change the "Person" entity at the client. The property MarialStateId can now be replaced by the MarialState property. The class looks a lot cleaner this way.
+
+```csharp
+public class Person
+{
+    public virtual Int32 Id { get; set; }
+    public virtual String FullName { get; set; }
+
+    public virtual WebServiceProxy.Model.MarialState MarialState { get; set; }
+}
+```
+
+Next in line is to change the mapping file for the "Person" entity. In this file we are going to make use of the MarialStateUserType that we created.
+
+```xml
+<?xmlversion="1.0" ?>
+<hibernate-mappingxmlns="urn:nhibernate-mapping-2.2">
+    <classname="NHibernateWebservices.Model.Person, NHibernateWebservices.Model"
+         table="Person">
+    <idname="Id"
+        column="Id"
+              unsaved-value="0">
+      <generatorclass="increment" />
+    </id>
+   
+    <propertycolumn="FullName"
+              name="FullName"
+              type="String" />
+
+    <propertyname="MarialState"
+              column="MarialStateId"
+              type="NHibernateWebservices.NHibernateUserType.MarialStateUserType, NHibernateWebservices"/>
+   
+  </class>
+</hibernate-mapping>
+```
+
+If we run the client and get a "Person" from the database, the MarialState will be filled automatically be NHibernate.
+
+
+##What about the performance?##
+If you have some performance problems, you can always but lazy loading on the MarialState property. This way we will only go to the service if we use the MarialState property.
+
+```xml
+<propertyname="MarialState"
+          column="MarialStateId"
+          lazy="true"
+          type="NHibernateWebservices.NHibernateUserType.MarialStateUserType, NHibernateWebservices"/>
+```
