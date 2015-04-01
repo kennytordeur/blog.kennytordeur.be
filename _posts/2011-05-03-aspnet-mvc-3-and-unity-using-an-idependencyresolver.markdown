@@ -7,60 +7,119 @@ published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET", "MVC", "Unity"]
 alias: ["/post/ASPNET-MVC-3-and-Unity-using-an-IDependencyResolver", "/post/aspnet-mvc-3-and-unity-using-an-idependencyresolver"]
+redirect_from: "/post/ASPNET-MVC-3-and-Unity-using-an-IDependencyResolver"
 ---
-<!-- more -->
-{% include imported_disclaimer.html %}
-<p>In this <a href="http://kennytordeur.blogspot.com/2011/04/aspnet-mvc-and-unity.html" target="_blank">post</a> i used a custom ControllerFactory for dependency injection. I created a custom ControllerFactory where i overrided the GetControllerInstance method. In this method i used the UnityContainer for creating instances of the requested controller.</p>
-<p>In ASP.NET MVC 3 their is some build in abstraction for doing dependency injection ( <a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.idependencyresolver.aspx" target="_blank">IDependencyResolver</a> ). I will change the example used in this <a href="http://kennytordeur.blogspot.com/2011/04/aspnet-mvc-and-unity.html" target="_blank">post</a> to use the IDependencyResolver.</p>
-<h2>the IDependencyResolver</h2>
-<p>The IDependencyResolver is a fairly easy interface. It contains only 2 methods:</p>
+
+In this [post](http://blog.kennytordeur.be/post/2011/04/aspnet-mvc-and-unity.html) i used a custom ControllerFactory for dependency injection. I created a custom ControllerFactory where i overrided the GetControllerInstance method. In this method i used the UnityContainer for creating instances of the requested controller.
+
+In ASP.NET MVC 3 their is some build in abstraction for doing dependency injection ( [IDependencyResolver](http://msdn.microsoft.com/en-us/library/system.web.mvc.idependencyresolver.aspx). I will change the example used in this [post](http://blog.kennytordeur.be/post/2011/04/aspnet-mvc-and-unity.html) to use the IDependencyResolver.
+
+##the IDependencyResolver
+
+The IDependencyResolver is a fairly easy interface. It contains only 2 methods:</p>
 <ul>
-<li>object GetService (Type serviceType)
-<ul>
-<li>The GetService method is used to resolve a single registered service</li>
-</ul>
-</li>
-<li>IEnumerable&lt;object&gt; GetServices(Type serviceType)
-<ul>
-<li>The GetServices method resolves all registered services</li>
-</ul>
-</li>
-</ul>
-<p>In our case, we will create an UnityDependencyResolver. This implementation will accept an IUnityContainer and will use this container for resolving the requested types. If the DependencyResolver is unable to resolve a type, it should always return null for the GetService method and an empty collection for the GetServices method. That is why a try catch is used in the UnityDependencyResolver.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:5365a625-2c9d-425d-a892-1514fbb591c6" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;">
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">UnityDependencyResolver</span> : <span style="color: #2b91af;">IDependencyResolver</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #2b91af;">IUnityContainer</span> container = <span style="color: #0000ff;">null</span>;<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> UnityDependencyResolver(<span style="color: #2b91af;">IUnityContainer</span> container)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">this</span>.container = container;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> <br /> <span style="color: #0000ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#region</span> IDependencyResolver Members<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">object</span> GetService(<span style="color: #2b91af;">Type</span> serviceType)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">try</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> container.Resolve(serviceType);<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">catch</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> <span style="color: #0000ff;">null</span>;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #2b91af;">IEnumerable</span>&lt;<span style="color: #0000ff;">object</span>&gt; GetServices(<span style="color: #2b91af;">Type</span> serviceType)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">try</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> container.ResolveAll(serviceType);<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">catch</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> <span style="color: #0000ff;">new</span> <span style="color: #2b91af;">List</span>&lt;<span style="color: #0000ff;">object</span>&gt;();<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> <br /> <span style="color: #0000ff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#endregion</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;}</div>
-</div>
-</div>
-<p><br /><br /></p>
-<h2><br />Registering the UnityDependencyResolver</h2>
-<p>Now that we created this dependency resolver, we have to register it so that the MVC framework will use it. This is done in the Global.asax, in the Application_Start method.</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f783996e-dc39-4061-b176-15bddde913a5" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;">
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">protected</span> <span style="color: #0000ff;">void</span> Application_Start()<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #2b91af;">AreaRegistration</span>.RegisterAllAreas();<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegisterGlobalFilters(<span style="color: #2b91af;">GlobalFilters</span>.Filters);<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RegisterRoutes(<span style="color: #2b91af;">RouteTable</span>.Routes);<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #2b91af;">DependencyResolver</span>.SetResolver(<span style="color: #0000ff;">new</span> <span style="color: #2b91af;">UnityDependencyResolver</span>(<span style="color: #2b91af;">UnityConfigurator</span>.GetContainer()));<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>You could also register it inside a WebActivator.PreApplicationStartMethod.</p>
-<h2>Changing the UnityControllerFactory</h2>
-<p>In the UnityControllerFactory we now can use the IDependencyResolver that we registered to resolve the requested controllers. It doesn&rsquo;t need to work with an IUnityContainer any more.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:63b16e10-3d0a-4f47-bb11-e6bb6d43d8e6" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;">
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">UnityControllerFactory</span> : <span style="color: #2b91af;">DefaultControllerFactory</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">protected</span> <span style="color: #0000ff;">override</span> <span style="color: #2b91af;">IController</span> GetControllerInstance(System.Web.Routing.<span style="color: #2b91af;">RequestContext</span> requestContext, <span style="color: #2b91af;">Type</span> controllerType)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #2b91af;">IController</span> result = <span style="color: #0000ff;">null</span>;<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">null</span> != controllerType)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = <span style="color: #2b91af;">DependencyResolver</span>.Current.GetService(controllerType) <span style="color: #0000ff;">as</span> <span style="color: #2b91af;">IController</span>;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> result;<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;}</div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h2>Changing the UnityConfigurator</h2>
-<p>As you might have noticed the Application_Start method of the Global.asax has changed a bit. The line for registering our UnityControllerFactory has been removed (see this <a href="http://kennytordeur.blogspot.com/2011/04/aspnet-mvc-and-unity.html" target="_blank">post</a> ) . The MVC 3 framework will use it&rsquo;s current DependencyResolver to resolve a ControllerFactory, so we have to register our UnityControllerFactory with the IUnityContainer. Now the MVC 3 framework will use our UnityControllerFactory as it&rsquo;s default ControllerFactory.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:5a208142-db62-4dae-961e-5ac16ee3285f" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;">
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;"><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">UnityConfigurator</span><br /> {<br /> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #2b91af;">IUnityContainer</span> GetContainer()<br /> &nbsp;&nbsp;&nbsp;&nbsp;{<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #2b91af;">IUnityContainer</span> container = <span style="color: #0000ff;">new</span> <span style="color: #2b91af;">UnityContainer</span>();<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;container.RegisterType&lt;<span style="color: #2b91af;">IControllerFactory</span>, <span style="color: #2b91af;">UnityControllerFactory</span>&gt;();<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;container.RegisterType&lt;<span style="color: #2b91af;">ITitleRepository</span>, <span style="color: #2b91af;">TitleRepository2</span>&gt;(<span style="color: #0000ff;">new</span> <span style="color: #2b91af;">HttpContextLifetimeManager</span>&lt;<span style="color: #2b91af;">ITitleRepository</span>&gt;());<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> container;<br /> &nbsp;&nbsp;&nbsp;&nbsp;}<br /> }</div>
-</div>
-</div>
-<h2>&nbsp;</h2>
-<h2>The result</h2>
-<p>If we run it, everything works just fine.</p>
-<p><a href="http://lh3.ggpht.com/_VX53QHr178k/TcAoY0Q7V7I/AAAAAAAAAEk/MRCd9BoKD4w/s1600-h/image3.png"><img style="display: inline; border-width: 0px;" title="" src="http://lh3.ggpht.com/_VX53QHr178k/TcAoZaGNu_I/AAAAAAAAAEo/FaTBOWKCt6g/image_thumb1.png?imgmax=800" alt="" width="504" height="212" border="0" /></a></p>
+* object GetService (Type serviceType)
+  * The GetService method is used to resolve a single registered service
+* IEnumerable<object> GetServices(Type serviceType)
+  * The GetServices method resolves all registered services
+
+In our case, we will create an UnityDependencyResolver. This implementation will accept an IUnityContainer and will use this container for resolving the requested types. If the DependencyResolver is unable to resolve a type, it should always return null for the GetService method and an empty collection for the GetServices method. That is why a try catch is used in the UnityDependencyResolver.
+
+```csharp
+    public class UnityDependencyResolver : IDependencyResolver
+    {
+        IUnityContainer container = null;
+
+        public UnityDependencyResolver(IUnityContainer container)
+        {
+            this.container = container;
+        }
+
+        #region IDependencyResolver Members
+
+        public object GetService(Type serviceType)
+        {
+            try
+            {
+                return container.Resolve(serviceType);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            try
+            {
+                return container.ResolveAll(serviceType);
+            }
+            catch
+            {
+                return new List<object>();
+            }
+        }
+
+        #endregion
+    }
+```
+
+##Registering the UnityDependencyResolver
+
+Now that we created this dependency resolver, we have to register it so that the MVC framework will use it. This is done in the Global.asax, in the Application_Start method.
+
+```csharp
+  protected void ApplicationStart()
+  {
+      AreaRegistration.RegisterAllAreas();
+
+      RegisterGlobalFilters(GlobalFilters.Filters);
+      RegisterRoutes(RouteTable.Routes);
+      
+      DependencyResolver.SetResolver(new UnityDependencyResolver(UnityConfigurator.GetContainer()));
+  }
+  ```
+        
+
+You could also register it inside a WebActivator.PreApplicationStartMethod.
+
+##Changing the UnityControllerFactory
+
+In the UnityControllerFactory we now can use the IDependencyResolver that we registered to resolve the requested controllers. It doesn't need to work with an IUnityContainer any more.
+
+```csharp
+    public class UnityControllerFactory : DefaultControllerFactory
+    {        
+        protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
+        {
+            IController result = null;
+
+            if (null != controllerType)
+            {
+                result = DependencyResolver.Current.GetService(controllerType) as IController;
+            }
+
+            return result;
+        }
+    }
+```
+
+##Changing the UnityConfigurator
+
+As you might have noticed the Application_Start method of the Global.asax has changed a bit. The line for registering our UnityControllerFactory has been removed (see [this](http://blog.kennytordeur.be/post/2011/04/aspnet-mvc-and-unity.html). The MVC 3 framework will use it's current DependencyResolver to resolve a ControllerFactory, so we have to register our UnityControllerFactory with the IUnityContainer. Now the MVC 3 framework will use our UnityControllerFactory as it's default ControllerFactory.
+
+```csharp
+public class UnityConfigurator
+{
+    public static IUnityContainer GetContainer()
+    {
+        IUnityContainer container = new UnityContainer();
+
+        container.RegisterType<IControllerFactory, UnityControllerFactory>();
+        container.RegisterType<ITitleRepository, TitleRepository2>(new HttpContextLifetimeManager<ITitleRepository>());
+
+        return container;
+    }
+}
+```
