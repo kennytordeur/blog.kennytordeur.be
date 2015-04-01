@@ -34,23 +34,23 @@ These are my viewmodels.
 
 The ChildViewModel will be used on other different views, so I'll create a partial view for it. So my index.cshtml will look like this.
 
-![image](/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image.png)
+![image](http://blog.kennytordeur.be/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image.png)
 
 But when I submit my form, I won't get a Description for my ChildViewModel on the controller site. This is because the partial view for my ChildViewModel doesn't render like it should. The generate name for the Description field is wrong.
 
-![image](/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_1.png)
+![image](http://blog.kennytordeur.be/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_1.png)
 
 The "Child" prefix isn't added to the Description field so the modelbinder doesn't know that this is a property of the ChildViewModel.
 Now when I convert my partial view to an editor template and use the EditorFor method the prefix will be added automatically.
 
-![image](/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_2.png)
+![image](http://blog.kennytordeur.be/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_2.png)
 
 The EditorFor method will actually add a "TemplateInfo" key to the ViewData of the editor template. This key will contain an instance of System.Web.Mvc.TemplateInfo. This object contains a HtmlFieldPrefix property that will be used by the TextBoxFor methode in order to generate the correct name.
 
 
 So if we want to use the Partial method we'll need to pass a ViewDataDictionary with a TemplateInfo key that will contain the correct HtmlFieldPrefix.
 
-![image](/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_4.png)
+![image](http://blog.kennytordeur.be/images/2014-01-24-aspnet-mvc-the-correct-way-to-render-a-partialview/image_4.png)
 
 ##Conclusion
 If your partialview needs to post data to the controller, I would suggest to transform your partialview to an editor template and use the EditorFor method. This will generate the correct HtmlFieldPrefix for you. But if you need to show a list and you need unique names. I would iterate the list and pass in a custom TemplateInfo to the Partail method for each item in the list. If you only need to show data you can use partial method.
