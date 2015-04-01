@@ -58,4 +58,4 @@ You can add a formaction action attribute on your submit button. This form attri
 
 The downside of this solution, is that it isn't supported by all browsers.
 
-![browsers supported](http://blog.kennytordeur.be/images/browsers.png)
+![browsers supported](http://blog.kennytordeur.be/images/2015-03-09-submitting-to-different-controller-actions-in-aspnet-mvc/browsers.png)
