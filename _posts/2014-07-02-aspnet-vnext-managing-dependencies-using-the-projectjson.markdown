@@ -14,21 +14,21 @@ In ASP.NET vNext your dependencies, configurations aren't configured in the .csp
 ##Adding Dependencies
 Dependencies are defined using a name and version.
 
-![image](/images/ASPNET-vNext-Managing-dependencies-using-the-projectjson/image_5.png)
+![image](/images/2014-07-02-aspnet-vnext-managing-dependencies-using-the-projectjson/image_5.png)
 
 And Visual Studio provides full intellisense to add dependencies.
 
-![image](/images/ASPNET-vNext-Managing-dependencies-using-the-projectjson/image_6.png)
+![image](/images/2014-07-02-aspnet-vnext-managing-dependencies-using-the-projectjson/image_6.png)
 
-![image](/images/ASPNET-vNext-Managing-dependencies-using-the-projectjson/image_7.png)
+![image](/images/2014-07-02-aspnet-vnext-managing-dependencies-using-the-projectjson/image_7.png)
 
 You can use wildcard to get latest version of a specific set.
 
-![image](/images/ASPNET-vNext-Managing-dependencies-using-the-projectjson/image_8.png)
+![image](/images/2014-07-02-aspnet-vnext-managing-dependencies-using-the-projectjson/image_8.png)
 
 If you always want the latest version, you'll need to specify an empty string.
 
-![image](/images/ASPNET-vNext-Managing-dependencies-using-the-projectjson/image_9.png)
+![image](/images/2014-07-02-aspnet-vnext-managing-dependencies-using-the-projectjson/image_9.png)
 
 ##Resolving dependencies in runtime
 
