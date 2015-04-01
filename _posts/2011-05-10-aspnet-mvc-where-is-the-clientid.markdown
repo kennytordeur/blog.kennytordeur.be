@@ -7,67 +7,122 @@ published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET", "MVC"]
 alias: ["/post/ASPNET-MVC-Where-is-the-ClientID", "/post/aspnet-mvc-where-is-the-clientid"]
+redirect_from: "/post/ASPNET-MVC-Where-is-the-ClientID"
 ---
-<!-- more -->
-{% include imported_disclaimer.html %}
-<p>For those who are used to program in ASP.NET know this scenario. You have a textbox and you want to do some custom validation in Javascript. You have to be able to access the textbox from the Javascript. The first thing you need to know is the Id for that textbox. You can&rsquo;t hard code it, because you are not sure how ASP.NET will generate the Id. If the control exists in an INamingContainer, the INamingContainer will add some prefix to the Id of the control.</p>
-<p>That is where the ClientID property comes to the rescue. This property contains the Id that will be used in HTML. Take a look at this example.</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:2d8b28fe-5f60-40a0-9f00-44c5ba3df11c" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;">
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;">
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;"><span style="background: #ffff00;">&lt;%</span><span style="color: #0000ff;">@</span> <span style="color: #800000;">Page</span> <span style="color: #ff0000;">Title</span><span style="color: #0000ff;">="Home Page"</span> <span style="color: #ff0000;">Language</span><span style="color: #0000ff;">="C#"</span> <span style="color: #ff0000;">MasterPageFile</span><span style="color: #0000ff;">="~/Site.master"</span> <span style="color: #ff0000;">AutoEventWireup</span><span style="color: #0000ff;">="true"</span><br /> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff0000;">CodeBehind</span><span style="color: #0000ff;">="Default.aspx.cs"</span> <span style="color: #ff0000;">Inherits</span><span style="color: #0000ff;">="WebApplication1._Default"</span> <span style="background: #ffff00;">%&gt;</span><br /> <br /> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">asp</span><span style="color: #0000ff;">:</span><span style="color: #800000;">Content</span> <span style="color: #ff0000;">ID</span><span style="color: #0000ff;">="HeaderContent"</span> <span style="color: #ff0000;">runat</span><span style="color: #0000ff;">="server"</span> <span style="color: #ff0000;">ContentPlaceHolderID</span><span style="color: #0000ff;">="HeadContent"&gt;</span><br /> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">asp</span><span style="color: #0000ff;">:</span><span style="color: #800000;">Content</span><span style="color: #0000ff;">&gt;</span><br /> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">asp</span><span style="color: #0000ff;">:</span><span style="color: #800000;">Content</span> <span style="color: #ff0000;">ID</span><span style="color: #0000ff;">="BodyContent"</span> <span style="color: #ff0000;">runat</span><span style="color: #0000ff;">="server"</span> <span style="color: #ff0000;">ContentPlaceHolderID</span><span style="color: #0000ff;">="MainContent"&gt;</span><br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">script</span> <span style="color: #ff0000;">type</span><span style="color: #0000ff;">="text/javascript"</span> <span style="color: #ff0000;">language</span><span style="color: #0000ff;">="javascript"&gt;</span><br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">function</span> ButtonClicked() {<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">var</span> element = document.getElementById(<span style="color: #800000;">'</span><span style="background: #ffff00; color: #800000;">&lt;%</span><span style="color: #800000;">= MyTextBox.ClientID </span><span style="background: #ffff00; color: #800000;">%&gt;</span><span style="color: #800000;">'</span>);<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span style="color: #800000;">'Value: '</span> + element.id);<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /> &nbsp;&nbsp;&nbsp;&nbsp;<br /> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">script</span><span style="color: #0000ff;">&gt;</span> <br /> &nbsp;&nbsp;&nbsp;<br /> &nbsp;&nbsp;&nbsp;<br /> &nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">asp</span><span style="color: #0000ff;">:</span><span style="color: #800000;">TextBox</span> <span style="color: #ff0000;">ID</span><span style="color: #0000ff;">="MyTextBox"</span> <span style="color: #ff0000;">runat</span><span style="color: #0000ff;">="server"</span> <span style="color: #0000ff;">/&gt;</span><br /> <br /> &nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">button</span> <span style="color: #ff0000;">onclick</span><span style="color: #0000ff;">="javascript:ButtonClicked()"&gt;</span>Click Here<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">button</span><span style="color: #0000ff;">&gt;</span><br /> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">asp</span><span style="color: #0000ff;">:</span><span style="color: #800000;">Content</span><span style="color: #0000ff;">&gt;</span></div>
-</div>
-</div>
-<p>In this example the Id of MyTextBox will be showed in a messagebox. Because MyTextBox is added in a Asp:Content control, the Id of this textbox will be prefixed with something. When we run the site and look at the source of the webpage, we will see it&rsquo;s id.</p>
-<pre>&lt;script type="text/javascript" language="javascript"&gt;<br />        function ButtonClicked() {<br /><br />            var element = document.getElementById(</pre>
-<p><span style="color: #ff0000;"><strong>'MainContent_MyTextBox'</strong></span></p>
-<pre>);<br /><br />            alert('Value: ' + element.id);<br />        }    <br />&lt;/script&gt;   <br />   <br />   &lt;input name="ctl00$MainContent$MyTextBox" type="text" value="dfd" id="</pre>
-<p><span style="color: #ff0000;"><strong>MainContent_MyTextBox</strong></span></p>
-<pre>" /&gt;<br /><br />   &lt;button onclick="javascript:ButtonClicked()"&gt;Click Here&lt;/button&gt;</pre>
-<p>&nbsp;</p>
-<h2>But how do we do this in ASP.NET MVC?</h2>
-<p>&nbsp;</p>
-<p>Take a look at this example. We use the TextBoxFor extension method to generate a textbox for our model. How do we figure out the Id that is used for the textbox?</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:71a9e4f6-3e09-418f-be8c-2d1c2864cc5e" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;"><br />
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;"><br />
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;"><span style="background: #ffff00;">@model </span>MvcApplication2.Models.<span style="color: #2b91af;">Person</span><br /><br /><br /><br /><span style="background: #ffff00;">@{</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;ViewBag.Title = <span style="color: #a31515;">"Home Page"</span>;<br /><br />}<br /><br /><br /><br /><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">h2</span><span style="color: #0000ff;">&gt;</span><span style="background: #ffff00;">@</span>ViewBag.Message<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">h2</span><span style="color: #0000ff;">&gt;</span><br /><br /><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">p</span><span style="color: #0000ff;">&gt;</span><br /><br />&nbsp;&nbsp;&nbsp;<br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">script</span> <span style="color: #ff0000;">type</span><span style="color: #0000ff;">="text/javascript"</span> <span style="color: #ff0000;">language</span><span style="color: #0000ff;">="javascript"&gt;</span><br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">function</span> ButtonClicked() {<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">var</span> element = document.getElementById(<span style="color: #800000;">"????"</span>);<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span style="color: #800000;">"Value: ??"</span>);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;<br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">script</span><span style="color: #0000ff;">&gt;</span><br /><br /><br /><br /><br /><br />&nbsp;&nbsp;&nbsp;<span style="background: #ffff00;">@</span>Html.TextBoxFor(m =&gt; m.Name);<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">button</span> <span style="color: #ff0000;">onclick</span><span style="color: #0000ff;">="javascript:ButtonClicked()"&gt;</span>Click Here<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">button</span><span style="color: #0000ff;">&gt;</span><br /><br /><br /><br /><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">p</span><span style="color: #0000ff;">&gt;</span></div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>You can hardcode the Id of the textbox ( &ldquo;Name&rdquo; ) in the javascript, but would it not be a lot&nbsp; more beautiful or easier ( intellisense) if you could pas a lambda expression?</p>
-<p>&nbsp;</p>
-<p>After looking in Reflector i saw that MVC uses this static class for generating an Id and it passes this Id to a static method of the TagBuilder class called &ldquo;CreateSanitizedId&rdquo;.</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:0b797468-43eb-4897-9411-ebc6ca95324d" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;"><br />
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;"><br />
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;"><span style="color: #0000ff;">namespace</span> System.Web.Mvc<br /><br />{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Summary:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides a helper class to get the model name from an expression.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">ExpressionHelper</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Summary:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gets the model name from a lambda expression.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Parameters:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;expression:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The expression.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Returns:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The model name.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">string</span> GetExpressionText(<span style="color: #2b91af;">LambdaExpression</span> expression);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Summary:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gets the model name from a string expression.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Parameters:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;expression:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The expression.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">// Returns:</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The model name.</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">string</span> GetExpressionText(<span style="color: #0000ff;">string</span> expression);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />}</div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>Now that we know this, the only thing left to do is to create an HtmlHelper extension that will do exactly the same.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:0f4fb859-777c-457a-82f1-e8632990e563" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;"><br />
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;"><br />
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px; white-space: nowrap;"><span style="color: #0000ff;">namespace</span> System.Web.Mvc.Html<br /><br />{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">class</span> <span style="color: #2b91af;">IdHtmlHelper</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #2b91af;">String</span> GetIdFor&lt;TModel, TProperty&gt;(<span style="color: #0000ff;">this</span> <span style="color: #2b91af;">HtmlHelper</span>&lt;TModel&gt; htmlHelper, <span style="color: #2b91af;">Expression</span>&lt;<span style="color: #2b91af;">Func</span>&lt;TModel, TProperty&gt;&gt; expression)<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">return</span> <span style="color: #2b91af;">TagBuilder</span>.CreateSanitizedId(<span style="color: #2b91af;">ExpressionHelper</span>.GetExpressionText(expression));<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />}</div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>Now we can write our code like this:</p>
-<p>&nbsp;</p>
-<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:81fcde91-5d3b-43b5-810e-3599fb408900" class="wlWriterEditableSmartContent" style="display: inline; float: none; margin: 0px; padding: 0px;"><br />
-<div style="border: #000080 1px solid; color: #000; font-family: 'Courier New', Courier, Monospace; font-size: 10pt;"><br />
-<div style="background-color: #ffffff; overflow: auto; padding: 2px 5px;"><span style="background: #ffff00;">@model </span>MvcApplication2.Models.<span style="color: #2b91af;">Person</span><br /><br /><br /><br /><span style="background: #ffff00;">@{</span><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;ViewBag.Title = <span style="color: #a31515;">"Home Page"</span>;<br /><br />}<br /><br /><br /><br /><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">h2</span><span style="color: #0000ff;">&gt;</span><span style="background: #ffff00;">@</span>ViewBag.Message<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">h2</span><span style="color: #0000ff;">&gt;</span><br /><br /><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">p</span><span style="color: #0000ff;">&gt;</span><br /><br />&nbsp;&nbsp;&nbsp;<br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">script</span> <span style="color: #ff0000;">type</span><span style="color: #0000ff;">="text/javascript"</span> <span style="color: #ff0000;">language</span><span style="color: #0000ff;">="javascript"&gt;</span><br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">function</span> ButtonClicked() {<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">var</span> element = document.getElementById(<span style="color: #800000;">"</span><span style="background: #ffff00; color: #800000;">@</span>Html.GetIdFor( m=&gt; m.Name)<span style="color: #800000;">"</span>);<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(<span style="color: #800000;">"Value: "</span> + element.id);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;<br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">script</span><span style="color: #0000ff;">&gt;</span><br /><br /><br /><br /><br /><br />&nbsp;&nbsp;&nbsp;<span style="background: #ffff00;">@</span>Html.TextBoxFor( m =&gt; m.Name)<br /><br /><br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">button</span> <span style="color: #ff0000;">onclick</span><span style="color: #0000ff;">="javascript:ButtonClicked()"&gt;</span>Click Here<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">button</span><span style="color: #0000ff;">&gt;</span><br /><br /><br /><br /><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">p</span><span style="color: #0000ff;">&gt;</span></div>
-</div>
-</div>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>When we render the page and look at the source, we can see that the Id is put in the getElementById method.</p>
-<pre>&lt;p&gt;<br />   <br />   &lt;script type="text/javascript" language="javascript"&gt;<br /><br />       function ButtonClicked() {<br /><br />           var element = document.getElementById("</pre>
-<p><span style="color: #ff0000;"><strong>Name</strong></span></p>
-<pre>");<br /><br />           alert("Value: " + element.id);        <br />       }<br />   <br />   &lt;/script&gt;<br /><br /><br />   &lt;input id="Name" name="Name" type="text" value="John Doe" /&gt;<br /><br />   &lt;button onclick="javascript:ButtonClicked()"&gt;Click Here&lt;/button&gt;</pre>
-<pre>&lt;/p&gt;</pre>
+For those who are used to program in ASP.NET know this scenario. You have a textbox and you want to do some custom validation in Javascript. You have to be able to access the textbox from the Javascript. The first thing you need to know is the Id for that textbox. You can't hard code it, because you are not sure how ASP.NET will generate the Id. If the control exists in an INamingContainer, the INamingContainer will add some prefix to the Id of the control.
+
+
+That is where the ClientID property comes to the rescue. This property contains the Id that will be used in HTML. Take a look at this example.
+
+```asp
+<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
+    CodeBehind="Default.aspx.cs" Inherits="WebApplication1._Default" %>
+
+<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
+</asp:Content>
+<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
+
+    <script type="text/javascript" language="javascript">
+        function ButtonClicked() {
+            var element = document.getElementById('<%= MyTextBox.ClientID %>');
+            alert('Value: ' + element.id);
+        }
+    </script>
+   
+   <asp:TextBox ID="MyTextBox" runat="server" />
+   <button onclick="javascript:ButtonClicked()">Click Here</button>
+</asp:Content>
+```
+
+In this example the Id of MyTextBox will be showed in a messagebox. Because MyTextBox is added in a Asp:Content control, the Id of this textbox will be prefixed with something. When we run the site and look at the source of the webpage, we will see it's id.
+
+```html
+<script type="text/javascript" language="javascript">
+        function ButtonClicked() {
+            var element = document.getElementById('MainContentMyTextBox');
+            alert('Value: ' + element.id);
+            }    
+</script>   
+   <input name="ctl00$MainContent$MyTextBox" type="text" value="dfd" id="MainContentMyTextBox" />
+   <button onclick="javascript:ButtonClicked()">Click Here</button>
+```
+
+##But how do we do this in ASP.NET MVC?
+
+Take a look at this example. We use the TextBoxFor extension method to generate a textbox for our model. How do we figure out the Id that is used for the textbox?
+
+```aspmvc
+@model MvcApplication2.Models.Person
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+<p>
+   <script type="text/javascript" language="javascript">
+       function ButtonClicked() {
+           var element = document.getElementById("????");
+           alert("Value: ??");
+           }
+   </script>
+
+   @Html.TextBoxFor(m => m.Name);
+   <button onclick="javascript:ButtonClicked()">Click Here</button>
+</p>
+```
+
+You can hardcode the Id of the textbox ( "Name" ) in the javascript, but would it not be a lot more beautiful or easier ( intellisense) if you could pas a lambda expression?
+
+After looking in Reflector i saw that MVC uses this static class for generating an Id and it passes this Id to a static method of the TagBuilder class called "CreateSanitizedId".
+
+Now that we know this, the only thing left to do is to create an HtmlHelper extension that will do exactly the same.
+
+```csharp
+namespace System.Web.Mvc.Html
+{
+    public static class IdHtmlHelper
+    {
+        public static String GetIdFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        {
+            return TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression));
+        }
+    }
+}
+```
+Now we can write our code like this:
+
+```aspmvc
+@model MvcApplication2.Models.Person
+@{
+    ViewBag.Title = "Home Page";
+  }
+
+<h2>@ViewBag.Message</h2>
+<p>
+   <script type="text/javascript" language="javascript">
+       function ButtonClicked() {
+           var element = document.getElementById("@Html.GetIdFor( m=> m.Name)");
+           alert("Value: " + element.id);        
+       }
+   </script>
+
+  @Html.TextBoxFor( m => m.Name)
+  <button onclick="javascript:ButtonClicked()">Click Here</button>
+</p>
+```
+
+When we render the page and look at the source, we can see that the Id is put in the getElementById method.
+
+```html
+<p>
+   <script type="text/javascript" language="javascript">
+       function ButtonClicked() {
+           var element = document.getElementById("Name");
+           alert("Value: " + element.id);        
+       }
+   </script>
+   <input id="Name" name="Name" type="text" value="John Doe" />
+   <button onclick="javascript:ButtonClicked()">Click Here</button>
+</p>
+```
