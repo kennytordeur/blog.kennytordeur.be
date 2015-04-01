@@ -34,7 +34,8 @@ This is the WCF service that we are going to use in this example.
 This service has only 1 method. The GetWeatherForeCast method gives us a weather forecast for a specific day ( = parameter ).
 
 This is how the WeatherForeCast object looks like.
-```C#
+
+```csharp
     [DataContract]
     public class WeatherForeCast
     {
@@ -48,7 +49,8 @@ This is how the WeatherForeCast object looks like.
 
 Fore some reason, the service method must also return Farenheit as property on all the uneven days. So we decide to create a new class WeatherForeCastExtra that inherits from WeatherForeCast and add the extra property.
 
-```C#
+
+``````csharp
     [DataContract]
     public class WeatherForeCastExtra: WeatherForeCast
     {        
@@ -59,7 +61,7 @@ Fore some reason, the service method must also return Farenheit as property on a
 
 Off course we also have to modify our service so that it could return a WeatherForeCastExtra object on all the uneven days.
 
-```C#
+```csharp
     public class WeatherForeCastService : IWeatherForeCastService
     {
         public WeatherForeCast GetWeatherForeCast(DateTime day)
@@ -78,7 +80,7 @@ Off course we also have to modify our service so that it could return a WeatherF
 
 If we now create a client for this and ask for a forecast on a even day, it will work fine. If you ask for a forecast on an uneven day, you will get an error.
 
-```C#
+```csharp
     namespace WeatherForeCastClient
 	{
     	class Program
@@ -95,7 +97,7 @@ If we now create a client for this and ask for a forecast on a even day, it will
 	}
 ```
 
-The problem is that the client doesn&rsquo;t have any idea how the WeatherForeCastExtra object looks like or how it has to be deserialized. If we look at the WSDL our service generates, we can&rsquo;t find a definition for the WeatherForeCastExtra type.
+The problem is that the client doesn't have any idea how the WeatherForeCastExtra object looks like or how it has to be deserialized. If we look at the WSDL our service generates, we can't find a definition for the WeatherForeCastExtra type.
 
 ![wsdl](http://blog.kennytordeur.be/images/2011-03-24-wcf-knowntype/wsdl.png)
 
@@ -103,7 +105,7 @@ It's kind of logic that we can't find a definition for the WeatherForeCastExtra 
 
 The KnownType attribute lets you specify types that should be include during serialization/deserialization. We have to use this attribute in our base class ( WeatherForeCast ).
 
-```C#
+```csharp
     [KnownType(typeof(WeatherForeCastExtra))]
 	[DataContract]
 	public class WeatherForeCast
@@ -126,7 +128,7 @@ If we run our client now, we won't get an exception on uneven days.
 
 You can imagine that, if you have to include 10 types, your class would be decorated with 10 KnownType attributes and would be a little hard to read. This is why the KnownType attribute has another constructor. This constructor accepts a method name, as a string, of a static method that returns an array of types. These types will be include in the WDSL definition of the service.
 
-```C#
+```csharp
     [KnownType("GetKnowTypes")]
 	[DataContract]
 	public class WeatherForeCast
