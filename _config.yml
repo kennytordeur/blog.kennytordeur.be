@@ -9,7 +9,7 @@ url: "http://blog.kennytordeur.be" # the base hostname & protocol for your site
 twitter_username: kennytordeur
 github_username:  kennytordeur
 
-permalink: /post/:title
+#permalink: /post/:title
  
 #markdown: kramdown
 #highlighter: pygments
