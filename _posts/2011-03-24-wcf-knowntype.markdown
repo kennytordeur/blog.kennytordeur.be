@@ -7,6 +7,7 @@ published: true
 categories: ["blog", "archives"]
 tags: ["WCF"]
 alias: ["/post/WCF-KnownType", "/post/wcf-knowntype"]
+redirect_from: "/post/WCF-KnownType"
 ---
 
 In object-oriented programming the concept of polymorphism is frequently used. This can cause problems in a WCF service if no action is taken. This is where **KnownType** comes to the rescue.
