@@ -7,9 +7,10 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET", "MVC"]
-alias: ["/post/Submitting-to-different-controller-actions-in-ASPNET-MVC", "/post/submitting-to-different-controller-actions-in-aspnet-mvc"]
 redirect_from: "/post/submitting-to-different-controller-actions-in-aspnet-mvc"
---
+alias: ["/post/Submitting-to-different-controller-actions-in-ASPNET-MVC", "/post/submitting-to-different-controller-actions-in-aspnet-mvc"]
+---
+
 When you create a view in ASP.NET MVC, you'll probably have 2 methods for that view in your controller. A HTTPGET method and a HTTPPOST method that will accept your form data. This POST method will do some sort of action. Now sometimes you wish, that you could put 2 submit buttons in the same form that will submit to 2 different actions on your controller.
 
 
