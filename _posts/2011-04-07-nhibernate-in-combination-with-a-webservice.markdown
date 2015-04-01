@@ -36,7 +36,7 @@ I created 2 new projects in visual studio. One which contains the model off the 
 
 ![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceModel.gif)
 
-```charp
+```csharp
 namespace NHibernateWebservices.WebServiceProxy.Model
 {
     public class MarialState
@@ -50,7 +50,7 @@ namespace NHibernateWebservices.WebServiceProxy.Model
 And another project for the service logic. As you can see this isn't a real service. I am mocking it.
 ![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceproxy.gif)
 
-```charp
+```csharp
 namespace NHibernateWebservices.WebServiceProxy
 {
     public static class MarialState
