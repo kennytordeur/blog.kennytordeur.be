@@ -157,10 +157,11 @@ public class Person
 This solution will work, but I can see several things that I am not happy with. First of all it's a lot off extra code. In this case the "Person" entity is very simple, but what if it was complex and you needed to get other data from a service, you would be writing a lot of code looking like this.
 
 
-Second, in this approach you need to create a reference between the WebServiceProxy and the business Model of the client. At this point the business Model of the client is also responsible to fill it's own data instead of only validating against business rules.
+###Second###
+In this approach you need to create a reference between the WebServiceProxy and the business Model of the client. At this point the business Model of the client is also responsible to fill it's own data instead of only validating against business rules.
 
 
-###Using NHibernate IUserType###
+####Using NHibernate IUserType####
 
 The ideal situation would that we ask NHibernate to give use a "Person" and that everything, including MarialState object, would be filled automatically. You can do this if you create a new NHibernate IUserType object. IUserType is an interface which allows you to plug in into the NHibernate mapping process and handle it your self.
 
@@ -248,7 +249,7 @@ This it the custom IUsertype that is created for the MarialState entity. In this
 * NullSafeGet
 * NullSafeSet
 
-####ReturnedType/SqlTypes properties####
+#####ReturnedType/SqlTypes properties#####
 
 
 The ReturnedType and SqlTypes properties tells NHibernate which type to expect. The ReturnedType property contains the type of object that this IUsertype has to return. In our case it is a MarialState object.
@@ -269,7 +270,7 @@ public SqlType[] SqlTypes
 }
 ```
 
-####NullSafeGet/NullSafeSet methods####
+#####NullSafeGet/NullSafeSet methods#####
 
 The NullSafeSet method is called when we want to save/update our object. In our case, the parameter "value" will contain our MarialState entity. The parameter "cmd" will contain the command that is used to update/insert the "Person" entity in the database.
 
@@ -306,7 +307,7 @@ public object NullSafeGet(System.Data.IDataReader rs, string[] names, object own
 }
 ```
 
-####Putting the pieces together####
+#####Putting the pieces together#####
 Now that everything is in place, we can start to glue it together. First of all, we can change the "Person" entity at the client. The property MarialStateId can now be replaced by the MarialState property. The class looks a lot cleaner this way.
 
 ```csharp
@@ -346,7 +347,7 @@ Next in line is to change the mapping file for the "Person" entity. In this file
 
 If we run the client and get a "Person" from the database, the MarialState will be filled automatically be NHibernate.
 
-##What about the performance?##
+###What about the performance?###
 If you have some performance problems, you can always but lazy loading on the MarialState property. This way we will only go to the service if we use the MarialState property.
 
 ```xml
