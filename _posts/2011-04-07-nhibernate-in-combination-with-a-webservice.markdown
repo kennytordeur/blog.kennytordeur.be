@@ -34,7 +34,7 @@ For those who noticed, yes i am using an Access as database. [Here](https://nhco
 ##The MarialState service##
 I created 2 new projects in visual studio. One which contains the model off the service.
 
-![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceModel.gif)
+![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webservicemodel.gif)
 
 ```csharp
 namespace NHibernateWebservices.WebServiceProxy.Model
