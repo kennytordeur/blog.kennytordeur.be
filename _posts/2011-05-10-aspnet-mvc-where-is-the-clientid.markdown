@@ -14,7 +14,7 @@ For those who are used to program in ASP.NET know this scenario. You have a text
 
 That is where the ClientID property comes to the rescue. This property contains the Id that will be used in HTML. Take a look at this example.
 
-```asp
+```html
 <%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
     CodeBehind="Default.aspx.cs" Inherits="WebApplication1._Default" %>
 
@@ -51,9 +51,8 @@ In this example the Id of MyTextBox will be showed in a messagebox. Because MyTe
 
 Take a look at this example. We use the TextBoxFor extension method to generate a textbox for our model. How do we figure out the Id that is used for the textbox?
 
-```aspmvc
+```html
 @model MvcApplication2.Models.Person
-
 @{
     ViewBag.Title = "Home Page";
 }
@@ -92,7 +91,7 @@ namespace System.Web.Mvc.Html
 ```
 Now we can write our code like this:
 
-```aspmvc
+```html
 @model MvcApplication2.Models.Person
 @{
     ViewBag.Title = "Home Page";
