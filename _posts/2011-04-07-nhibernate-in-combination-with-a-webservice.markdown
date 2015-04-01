@@ -48,6 +48,7 @@ namespace NHibernateWebservices.WebServiceProxy.Model
 ```
 
 And another project for the service logic. As you can see this isn't a real service. I am mocking it.
+
 ![webservice model](http://blog.kennytordeur.be/images/2011-04-07-nhibernate-in-combination-with-a-webservice/webserviceproxy.gif)
 
 ```csharp
@@ -251,6 +252,7 @@ This it the custom IUsertype that is created for the MarialState entity. In this
 
 
 The ReturnedType and SqlTypes properties tells NHibernate which type to expect. The ReturnedType property contains the type of object that this IUsertype has to return. In our case it is a MarialState object.
+
 ```csharp
 public Type ReturnedType
 {
@@ -343,7 +345,6 @@ Next in line is to change the mapping file for the "Person" entity. In this file
 ```
 
 If we run the client and get a "Person" from the database, the MarialState will be filled automatically be NHibernate.
-
 
 ##What about the performance?##
 If you have some performance problems, you can always but lazy loading on the MarialState property. This way we will only go to the service if we use the MarialState property.
