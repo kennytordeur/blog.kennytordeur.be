@@ -7,6 +7,7 @@ published: true
 categories: ["blog", "archives"]
 tags: ["NHibernate"]
 alias: ["/post/NHibernate-in-combination-with-a-webservice", "/post/nhibernate-in-combination-with-a-webservice"]
+redirect_from: "/post/NHibernate-in-combination-with-a-webservice"
 ---
 
 In this post i'ill try to explain how you can make NHibernate interact with a webservice to fill in a certain object.
