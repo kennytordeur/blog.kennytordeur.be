@@ -79,7 +79,7 @@ In MEF there are 3 different type of creation policies that we can choose. More 
 
 We will set Creation policy to Shared and run the application.
 
-![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image_thumb%255B3%255D.png)
+![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image1.png)
 
 We see that the same instance of the MyCustomOject is used. But when we refresh the page, we will get exactly the same value, over and over again. So this is not the behavior that we want.
 
@@ -88,7 +88,7 @@ We see that the same instance of the MyCustomOject is used. But when we refresh 
 
 We will set the creation policy to NonShared.
 
-![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image_thumb%255B6%255D.png)
+![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image2.png)
 
 With every refresh, we will get a different value for the Created property, but everytime that an IMyCustomObject is asked form the MEF container, a new value is created so this is not a solution for my problem.
 
@@ -102,7 +102,7 @@ The HttpContext contains Http information about an HttpRequest. There is one pro
 
 The proxy pattern will be used to make this a transparent as possible.
 
-![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image%255B16%255D.png)
+![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image3.png)
 
 ###The Implementation
 
@@ -177,7 +177,7 @@ We also need to change the ExportAttribute on the MyCustomObject class so that i
 
 When we know run the application, we will use the same MyCustomObject object per request. When we refresh, we'll get an other instance.
 
-![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image_thumb%255B13%255D.png)
+![image](http://blog.kennytordeur.be/images/2012-12-21-aspnet-mvc-mef-per-request-lifetime/image4.png)
 
 ##Conclusion
 
