@@ -1,13 +1,13 @@
 ---
 layout: post
 author: Kenny Tordeur
-title: "What's new in C#-6.0: Productivity"
+title: "What's new in C# 6.0: Productivity"
 date: 2015-04-02 09:14:00 +0100
 comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["C#"]
-alias: ["/post/What-is-new-in-C#-6.0-Productivity", "/post/what-is-new-in-C#-6.0-productivity"]
+alias: ["/post/What-is-new-in-C#6-Productivity", "/post/what-is-new-in-C#6--productivity"]
 ---
 Version 6 of C# contains al buncnh of new feature that allows to speed up the productivity of the developer.
 
