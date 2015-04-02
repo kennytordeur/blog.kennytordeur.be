@@ -13,7 +13,7 @@ Version 6 of C# contains al buncnh of new feature that allows to speed up the pr
 
 ## Feature 1 : static usings
 
-The classes are structured by their usings. If you need a specific class, you'll need to add a using containing the namespace of that class. If you do this, you'll get access to all the classes that are defined in that using. With static usings, you can bring only a specific class into "scope" which will you access to all of it's static methods and inner public class definitions.
+The classes are structured by their usings. If you need a specific class, you'll need to add a using containing the namespace of that class. If you do this, you'll get access to all the classes that are defined in that using. With static usings, you can bring only a specific class into "scope" which will you access to all of it's static methods.
 
 Consider following console application.
 
