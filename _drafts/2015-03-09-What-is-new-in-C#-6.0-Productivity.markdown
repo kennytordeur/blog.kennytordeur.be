@@ -49,7 +49,7 @@ namespace ConsoleApplication8
 }
 ```
 
-## Feature 2 : the elvis operator
+## Feature 2 : ? a.k.a the elvis operator
 
 Consider following object graph.
 
@@ -95,6 +95,46 @@ I'll needs those if-statements because you don't know if the child object isn't 
 
 If one of the child objects is null, we'll get the default value for a "string" object.
 
+##Feature 3:  Expression Bodied Members
+
+Expression Bodies Members give you the possibility to write short methods even shorter.
+
+```csharp
+    public class ObjectC
+    {
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+```
+
+The "ToString" method can be writing shorter using expressions.
+
+```csharp
+    public class ObjectC
+    {
+        public string Name { get; set; }
+
+        public override string ToString() => Name;
+    }
+```
+
+You can only do this for expression on a single line. If you would write it like this, it won't build and Visual Studio will give build errors.
+
+```csharp
+    public class ObjectC
+    {
+        public string Name { get; set; }
+
+        public override string ToString() =>  
+        {
+            return Name;
+        }
+    }
+```
 
 
 
