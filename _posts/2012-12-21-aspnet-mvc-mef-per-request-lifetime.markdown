@@ -167,7 +167,8 @@ Next I'll create the proxy object (MyCustomObjectPerRequest). This object will c
     }
 ```
 
-We also need to change the ExportAttribute on the MyCustomObject class so that it doesn't specify a ContractType.</p>
+We also need to change the ExportAttribute on the MyCustomObject class so that it doesn't specify a ContractType.
+
 ```csharp
     [Export] 
     public class MyCustomObject : IMyCustomObject
