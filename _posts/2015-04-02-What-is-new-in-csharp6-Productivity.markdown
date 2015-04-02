@@ -9,7 +9,7 @@ categories: ["blog", "archives"]
 tags: ["C#"]
 alias: ["/post/What-is-new-in-csharp6-Productivity", "/post/what-is-new-in-csharp6-productivity"]
 ---
-Version 6 of C# contains al buncnh of new feature that allows to speed up the productivity of the developer.
+Version 6 of C# contains a bunch of new feature that allows to speed up the productivity of the developer.
 
 ## Feature 1 : static usings
 
