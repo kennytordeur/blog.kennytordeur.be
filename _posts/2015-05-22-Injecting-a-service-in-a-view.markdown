@@ -64,7 +64,7 @@ If i run my application, i would get an error saying that there is no service fo
 
 ![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.png)
 
-When you use *@injection*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
+When you use *@inject*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
 
 ```csharp
         public void ConfigureServices(IServiceCollection services)
