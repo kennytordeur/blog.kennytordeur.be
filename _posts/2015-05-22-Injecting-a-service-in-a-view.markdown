@@ -4,7 +4,7 @@ author: Kenny Tordeur
 title: "Injecting a service in a view"
 date: 2015-05-11 09:14:00 +0100
 comments: true
-published: false
+published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET","MVC"]
 alias: ["/post/injecting-a-service-in-a-view.markdown"]
@@ -59,5 +59,21 @@ To use the service in my view, i add the inject statement on top of the view. "q
     <h2>@qoute</h2>
 }
 ```
+##Registering your service in your application
+If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Qoutes.
 
+![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view./error.gif)
+
+When you use *@injection*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
+
+```csharp
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //other stuff ...
+            
+            services.AddTransient<VSCode1.Models.Qoutes>();
+        }
+```
+Now the View renders without error.
+![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view./run.gif)
 
