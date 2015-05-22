@@ -19,6 +19,7 @@ The *@inject* needs 2 "parameters" in order to work.
 
 ##My Qoutes service
 This is the class that i want to inject into my view.
+
 ```csharp
 using System.Collections.Generic;
 using System;
@@ -62,7 +63,7 @@ To use the service in my view, i add the inject statement on top of the view. "q
 ##Registering your service in your application
 If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Qoutes.
 
-![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.gif)
+![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.GIF)
 
 When you use *@injection*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
 
@@ -75,5 +76,5 @@ When you use *@injection*, the runtime will use dependency injection to inject t
         }
 ```
 Now the View renders without error.
-![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/run.gif)
+![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/run.GIF)
 
