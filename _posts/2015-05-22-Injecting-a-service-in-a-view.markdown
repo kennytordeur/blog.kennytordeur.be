@@ -52,7 +52,7 @@ To use the service in my view, i add the inject statement on top of the view. "q
 ```html
 @inject VSCode1.Models.Quotes quotes
 
-<h1>@qoutes.GetRandomQuote()</h1>
+<h1>@quotes.GetRandomQuote()</h1>
 
 @foreach(var quote in quotes.GetQuotes())
 {
@@ -62,7 +62,7 @@ To use the service in my view, i add the inject statement on top of the view. "q
 ##Registering your service in your application
 If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Quotes.
 
-![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.GIF)
+![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.png)
 
 When you use *@injection*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
 
