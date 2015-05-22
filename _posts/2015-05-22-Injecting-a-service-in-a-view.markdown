@@ -13,8 +13,7 @@ In the ASP.NET MVC 6, you can now use the *@inject* keyword. This allows you to 
 
 The *@inject* needs 2 "parameters" in order to work. 
 
-
-**@inject _[name of your class]</italic> [variable name that can be used in your view]_**
+**@inject _[name of your class] [variable name that can be used in your view]_**
 
 
 ##My Qoutes service
@@ -26,7 +25,7 @@ using System;
 
 namespace VSCode1.Models
 {
-    public class Qoutes
+    public class Quotes
 	{
 		List<string> _quotes = new List<string> { 
 			"Don't cry because it's over, smile because it happened",
@@ -34,13 +33,13 @@ namespace VSCode1.Models
 			"Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."	 
 		 };
 
-		public string GetRandomQoute()
+		public string GetRandomQuote()
 		{
 			Random r = new Random();				
 			return _quotes[r.Next(0, _quotes.Count - 1)];
 		}
 			
-		public List<string> GetQoutes()
+		public List<string> GetQuotes()
 		{
 			return _quotes;
 		}
@@ -48,20 +47,20 @@ namespace VSCode1.Models
 }
 ```
 ## Putting it in my view
-To use the service in my view, i add the inject statement on top of the view. "qoutes" can be used a variable in this view and is of type "VSCode1.Models.Qoutes".
+To use the service in my view, i add the inject statement on top of the view. "quotes" can be used a variable in this view and is of type "VSCode1.Models.Quotes".
 
 ```html
-@inject VSCode1.Models.Qoutes qoutes
+@inject VSCode1.Models.Quotes quotes
 
-<h1>@qoutes.GetRandomQoute()</h1>
+<h1>@qoutes.GetRandomQuote()</h1>
 
-@foreach(var qoute in qoutes.GetQoutes())
+@foreach(var quote in quotes.GetQuotes())
 {
-    <h2>@qoute</h2>
+    <h2>@quote</h2>
 }
 ```
 ##Registering your service in your application
-If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Qoutes.
+If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Quotes.
 
 ![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.GIF)
 
@@ -72,9 +71,7 @@ When you use *@injection*, the runtime will use dependency injection to inject t
         {
             //other stuff ...
             
-            services.AddTransient<VSCode1.Models.Qoutes>();
+            services.AddTransient<VSCode1.Models.Quotes>();
         }
 ```
 Now the View renders without error.
-![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/run.GIF)
-
