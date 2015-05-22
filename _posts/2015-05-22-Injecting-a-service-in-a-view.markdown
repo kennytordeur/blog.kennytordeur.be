@@ -29,20 +29,20 @@ namespace VSCode1.Models
 	{
 		List<string> _quotes = new List<string> { 
 			"Don't cry because it's over, smile because it happened",
-		 "Be yourself; everyone else is already taken.",
-		 "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."		  
+			"Be yourself; everyone else is already taken.",
+			"Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."	 
 		 };
-		 
-			public string GetRandomQoute()
-			{
-				Random r = new Random();				
-				return _quotes[r.Next(0, _quotes.Count - 1)];
-			}
+
+		public string GetRandomQoute()
+		{
+			Random r = new Random();				
+			return _quotes[r.Next(0, _quotes.Count - 1)];
+		}
 			
-			public List<string> GetQoutes()
-			{
-				return _quotes;
-			}
+		public List<string> GetQoutes()
+		{
+			return _quotes;
+		}
 	}
 }
 ```
@@ -62,7 +62,7 @@ To use the service in my view, i add the inject statement on top of the view. "q
 ##Registering your service in your application
 If i run my application, i would get an error saying that there is no service for type VSCode1.Models.Qoutes.
 
-![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view./error.gif)
+![error](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/error.gif)
 
 When you use *@injection*, the runtime will use dependency injection to inject the type you requested. So your type needs to be registered in the dependency injector. This needs to be done in the *startup.cs* file.
 
@@ -75,5 +75,5 @@ When you use *@injection*, the runtime will use dependency injection to inject t
         }
 ```
 Now the View renders without error.
-![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view./run.gif)
+![run](http://blog.kennytordeur.be/images/2015-05-22-Injecting-a-service-in-a-view/run.gif)
 
