@@ -19,7 +19,6 @@ Basically taghelpers do the same thing as the htmlhelpers we all know. If you us
 ##Defining your taghelper
 Your custom taghelper will need to inherit from the TagHelper base class. This base class defines two virtual methods called Process and ProcessAsync. In these methods you'll write your taghelper logic.
 
-
 ```csharp
     public class MyTagHelper : TagHelper
     {
@@ -35,17 +34,18 @@ In order to use your taghelper, i'll need to register it. This done in the "_Vie
 ```csharp
       @addTagHelper "MyWebApplication.MyTagHelper, MyWebApplication"
 ```
+
 The last part is your dll name. The first part is the name (namespace + classname) of the taghelper you want to register. If you want to register all the taghelpers from a specific dll you can use a wildcard.
 
 ```csharp
       @addTagHelper "*, MyWebApplication"
 ```
 
-When you succesfully have registered your taghelper, i'll get intellisence for your taghelper in your views.
+When you succesfully have registered your taghelper, i'll get intellisense for your taghelper in your views.
 
 Next, you will need to specify a target html tag that will invoke your custom taghelper. This can be done in 2 ways:
 * by naming convention
- * If your your taghelper is called TestTagHelper, it will target <test> 
+ * If your your taghelper is called TestTagHelper, it will target    <test> 
 * using the TargetElement attribute
  * you explicitly set the target tag
 
@@ -60,10 +60,10 @@ Next, you will need to specify a target html tag that will invoke your custom ta
     }
 ```
 ##Adding attributes/properties on a taghelper
-I now want to pass a name and lastname to the custom taghelper. This parameters will be passed like this:
+I now want to pass a name and lastname to the custom taghelper. These parameters will be passed like this:
 
 ```html
-<person name="kenny" lastname="tordeur"/>
+<Person name="kenny" lastname="tordeur"></Person>
 ```
 
 In the taghelper you will need to define these attributes. This can be done using the TargetElement tag.
@@ -97,10 +97,10 @@ In order to get the values of the attributes, you can use the TagHelperContext. 
 ```
 To map the attribute values to the correct properties, a naming convention is used. The attribute "name" will map to the property "Name". So the first letter of the attribute will be transformed to an uppercased letter. If you would have an attribute "last-name", it would be mapped to "LastName" property. So the "-" will be remove from the attribute name and the next letter will be transformed to an uppercased letter.
 
-You aren't just limited in passing simple types (string, int, ...) to the taghelper. You can also pass complex types to the taghelper.
+You aren't just limited by passing in simple types (string, int, ...) to the taghelper. You can also pass complex types to the taghelper.
 
 ##Rendering some html
-The only thing left to do is implementing an output for the taghelper. This can be done using the TagHelperOutput object. This object contains everything you need to create your custom html output. In this example i'll just concatent the Name with the Lastname.
+The only thing left to do is to implement an output for the taghelper. This can be done using the TagHelperOutput object. This object contains everything you need to create your custom html output. In this example i'll just concatent the Name with the Lastname.
 
 ```csharp
     [TargetElement("Person",Attributes = "name,lastname")]
@@ -125,6 +125,10 @@ I've but this in my view.
 ```html
 	<Person lastname="Tordeur" name="Kenny"></Person>
 ```
+
+The intellisense helped me.
+
+![intellisense](http://blog.kennytordeur.be/images/2015-10-14-creating-a-custom-taghelper/intellisense.png)
 
 This is the output when the view is rendered in the browser.
 
