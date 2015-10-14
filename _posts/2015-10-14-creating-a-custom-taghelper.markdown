@@ -50,7 +50,8 @@ Next, you will need to specify a target html tag that will invoke your custom ta
 				<li> If your your taghelper is called TestTagHelper, it will target all Test-tags</li>
 			</ul>
 		</li>
-		
+	</ul>
+	<ul>
 		<li>using the TargetElement attribute
 			<ul>
 				<li>you explicitly set the target tag</li>
