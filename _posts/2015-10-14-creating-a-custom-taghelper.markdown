@@ -48,7 +48,7 @@ Next, you will need to specify a target html tag that will invoke your custom ta
 		<li>by naming convention</li>
 		<li>
 			<ul>
-				<li> If your your taghelper is called TestTagHelper, it will target <pre><test></pre></li>
+				<li> If your your taghelper is called TestTagHelper, it will target <code><test></code></li>
 			</ul>
 		</li>
 		<li>using the TargetElement attribute</li>
