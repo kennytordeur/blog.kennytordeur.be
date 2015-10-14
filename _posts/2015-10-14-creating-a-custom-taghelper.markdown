@@ -46,17 +46,16 @@ When you succesfully have registered your taghelper, i'll get intellisense for y
 Next, you will need to specify a target html tag that will invoke your custom taghelper. This can be done in 2 ways:
 	<ul>
 		<li>by naming convention</li>
-		<li>
+		
 			<ul>
-				<li> If your your taghelper is called TestTagHelper, it will target <code><test></code></li>
+				<li> If your your taghelper is called TestTagHelper, it will target <plaintext><test></plaintext></li>
 			</ul>
-		</li>
+		
 		<li>using the TargetElement attribute</li>
-		<li>
+		
 			<ul>
 				<li>you explicitly set the target tag</li>
 			</ul>
-		</li>
 	</ul>
 ```csharp
     [TargetElement("Person")]
