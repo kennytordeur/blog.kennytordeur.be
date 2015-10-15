@@ -1,7 +1,7 @@
 ---
 layout: post
 author: Kenny Tordeur
-title: "Taghelpers and Depedency Injection"
+title: "Taghelpers and Dependency Injection"
 date: 2015-10-15 09:14:00 +0100
 comments: true
 published: true
