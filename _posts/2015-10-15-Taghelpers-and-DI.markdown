@@ -28,7 +28,7 @@ I was wondering if you could use Dependency Injection for taghelpers. I'll modif
     }
 ```
 
-Register this class in the DI-sytem of Asp.net. Add it to services collection in the ConfigureServices method from the Startup class.
+Register this class in the DI-system of Asp.net. Add it to services collection in the ConfigureServices method from the Startup class.
 
 ```csharp
   public void ConfigureServices(IServiceCollection services)
