@@ -44,11 +44,21 @@ The last part is your dll name. The first part is the name (namespace + classnam
 When you succesfully have registered your taghelper, i'll get intellisense for your taghelper in your views.
 
 Next, you will need to specify a target html tag that will invoke your custom taghelper. This can be done in 2 ways:
-* by naming convention
- * If your your taghelper is called TestTagHelper, it will target    <test> 
-* using the TargetElement attribute
- * you explicitly set the target tag
-
+	<ul>
+		<li>by naming convention
+			<ul>
+				<li> If your your taghelper is called TestTagHelper, it will target all Test-tags</li>
+			</ul>
+		</li>
+	</ul>
+	<ul>
+		<li>using the TargetElement attribute
+			<ul>
+				<li>you explicitly set the target tag</li>
+			</ul>
+		</li>
+	</ul>
+	
 ```csharp
     [TargetElement("Person")]
     public class MyTagHelper : TagHelper
