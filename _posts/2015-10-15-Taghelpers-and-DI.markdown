@@ -37,7 +37,7 @@ Register this class in the DI-sytem of Asp.net. Add it to services collection in
   }
 ```
 
-## Modifing the taghelper
+## Modifiying the taghelper
 ```csharp
     [TargetElement("Person")]
     public class MyTagHelper : TagHelper
