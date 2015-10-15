@@ -61,7 +61,7 @@ Register this class in the DI-sytem of Asp.net. Add it to services collection in
 ##Testing
 When I run the application, the DI-system will also inject dependencies for taghelpers.
 
-![The result]({{site.baseurl}}/2015-10-15-Taghelpers and DI/result.png)
+![The result]({{site.baseurl}}/images/2015-10-15-Taghelpers and DI/result.png)
 
 
 
