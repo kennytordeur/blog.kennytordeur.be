@@ -7,7 +7,7 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET","Dependency Injection"]
-alias: ["/post/2015-10-15-Taghelpers and DI.markdown"]
+alias: ["/post/2015-10-15-Taghelpers-and-DI.markdown"]
 ---
 
 I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this [post]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
