@@ -1,12 +1,12 @@
 ---
 layout: post
 author: Kenny Tordeur
-title: "Taghelpers and Dependency Injection
+title: "Taghelpers and Depedency Injection"
 date: 2015-10-15 09:14:00 +0100
 comments: true
 published: true
 categories: ["blog", "archives"]
-tags: ["ASP.NET","Dependency Injection"]
+tags: ["ASP.NET","taghelper"]
 alias: ["/post/2015-10-15-Taghelpers-and-DI.markdown"]
 ---
 
