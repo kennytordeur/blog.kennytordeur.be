@@ -28,7 +28,7 @@ Luckily Asp.Net MVC has a build in mechanisme to fight those attacks. In the pre
 ```html
    @using(Html.BeginForm())
    {
-	
+	@Html.AntiForgeryToken()
    }
 ```
 
@@ -53,6 +53,7 @@ In the Asp.Net MVC 6 the mechanisme has changed a bit. You still need to put the
 ```
 
 The result html
+
 ```html
 <form action="/My/Create/" method="post">
     
