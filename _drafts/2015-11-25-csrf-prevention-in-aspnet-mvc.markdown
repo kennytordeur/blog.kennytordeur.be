@@ -11,7 +11,7 @@ alias: ["/post/csrf-prevention-in-aspnet-mvc.markdown"]
 ---
 Cross-Site Request Forgery (CSRF) is an attack that forces an end user to execute unwanted actions on a web application in which they're currently authenticated. CSRF attacks specifically target state-changing requests, not theft of data, since the attacker has no way to see the response to the forged request. With a little help of social engineering (such as sending a link via email or chat), an attacker may trick the users of a web application into executing actions of the attacker's choosing. If the victim is a normal user, a successful CSRF attack can force the user to perform state changing requests like transferring funds, changing their email address, and so forth. If the victim is an administrative account, CSRF can compromise the entire web application. (from [www.owasp.org](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29))
 
-Luckily Asp.Net MVC has a build in mechanisme to fight those attacks. In the previous versions of Asp.Net MVC you used an AntiForgeryToken. You needed to put a ValidateAntiForgeryToken attribute on your MVC action or controller. In the view, you needed to instruct RAZOR to create an AntiForgeryToken. This command needed to be placed inside a form or the using of an Html.BeginForm().
+Luckily Asp.Net MVC has a build in mechanisme to fight those attacks. In the previous versions of Asp.Net MVC you used an AntiForgeryToken. You needed to put a ValidateAntiForgeryToken attribute on your MVC action or controller. In the view, you needed to instruct RAZOR to create an AntiForgeryToken. This command needed to be placed inside a form tag or the using of a Html.BeginForm().
 
 ```csharp
    public class MyController : Controller
