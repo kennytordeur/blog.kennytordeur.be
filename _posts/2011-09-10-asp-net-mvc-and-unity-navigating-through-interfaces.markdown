@@ -8,10 +8,12 @@ categories: ["blog", "archives"]
 tags: ["ASP.NET", "MVC", "Unity"]
 alias: ["/post/ASP-NET-MVC-and-Unity-Navigating-through-Interfaces", "/post/asp-net-mvc-and-unity-navigating-through-interfaces"]
 ---
-<!-- more -->
-{% include imported_disclaimer.html %}
-<p>In this previous <a href="http://kennytordeur.blogspot.com/2011/05/aspnet-mvc-3-and-unity-using.html" target="_blank">post</a> you saw how i used an IDependencyResolver in combination with an IUnityContainer to created a loosely coupled application. But there is still one dependency that i want to cut and that is the url that is used to navigate.</p>
-<p>Normally if we want to navigate to the Index action of our HomeController we use something like this in the url: http://localhost/Home/Index<br />That is an dependency that i want to cut, because we ask to use a controller of type &ldquo;HomeController&rdquo;<br />.<br />What i want to do is to navigate through interfaces, http://localhost/IHome/Index for example. When we type this, it will be up to Unity to resolve the requested controller. I will use the solution used in this <a href="http://kennytordeur.blogspot.com/2011/05/aspnet-mvc-3-and-unity-using.html" target="_blank">post</a> as base.</p>
+<!-- more -->
+
+{% include imported_disclaimer.html %}
+
+<p>In this previous [post]({{site.url}}/post/2011/05/03/aspnet-mvc-3-and-unity-using-an-idependencyresolver) you saw how i used an IDependencyResolver in combination with an IUnityContainer to created a loosely coupled application. But there is still one dependency that i want to cut and that is the url that is used to navigate.</p>
+<p>Normally if we want to navigate to the Index action of our HomeController we use something like this in the url: http://localhost/Home/Index<br />That is an dependency that i want to cut, because we ask to use a controller of type &ldquo;HomeController&rdquo;<br />.<br />What i want to do is to navigate through interfaces, http://localhost/IHome/Index for example. When we type this, it will be up to Unity to resolve the requested controller. I will use the solution used in this [post]({{site.url}}/post/2011/05/03/aspnet-mvc-3-and-unity-using-an-idependencyresolver) as base.</p>
 <h2>&nbsp;</h2>
 <h2>Let&rsquo;s get started</h2>
 <p>The first thing that we need to do is to create an IHomeController interface. This interface will be implemented by our HomeController.</p>
