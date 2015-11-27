@@ -14,7 +14,7 @@ permalink: /post/:year/:month/:day/:title
  
 #markdown: kramdown
 #highlighter: pygments
-paginate: 5
+paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
 
 markdown: redcarpet
