@@ -6,8 +6,7 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET", "MVC", "Unity"]
-alias: ["/post/ASPNET-MVC-and-Unity", "/post/aspnet-mvc-and-unity"]
-redirect_from: "/post/ASPNET-MVC-and-Unity"
+redirect_from: ["/post/ASPNET-MVC-and-Unity", "/post/2014/04/ASPNET-MVC-and-Unity.html"
 ---
 ##What is Unity?
 
