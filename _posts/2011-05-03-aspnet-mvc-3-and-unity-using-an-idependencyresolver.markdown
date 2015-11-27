@@ -107,7 +107,7 @@ In the UnityControllerFactory we now can use the IDependencyResolver that we reg
 
 ##Changing the UnityConfigurator
 
-As you might have noticed the Application_Start method of the Global.asax has changed a bit. The line for registering our UnityControllerFactory has been removed (see [this](http://blog.kennytordeur.be/post/2011/04/aspnet-mvc-and-unity.html). The MVC 3 framework will use it's current DependencyResolver to resolve a ControllerFactory, so we have to register our UnityControllerFactory with the IUnityContainer. Now the MVC 3 framework will use our UnityControllerFactory as it's default ControllerFactory.
+As you might have noticed the Application_Start method of the Global.asax has changed a bit. The line for registering our UnityControllerFactory has been removed (see [this]({{site.url}}/post/2011/04/23/aspnet-mvc-and-unity)). The MVC 3 framework will use it's current DependencyResolver to resolve a ControllerFactory, so we have to register our UnityControllerFactory with the IUnityContainer. Now the MVC 3 framework will use our UnityControllerFactory as it's default ControllerFactory.
 
 ```csharp
 public class UnityConfigurator
