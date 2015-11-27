@@ -12,7 +12,7 @@ redirect_from: "/post/ASPNET-MVC-3-and-Unity-using-an-IDependencyResolver"
 
 In this [post]({{site.url}}/post/2011/04/23/aspnet-mvc-and-unity) i used a custom ControllerFactory for dependency injection. I created a custom ControllerFactory where i overrided the GetControllerInstance method. In this method i used the UnityContainer for creating instances of the requested controller.
 
-In ASP.NET MVC 3 their is some build in abstraction for doing dependency injection ( [IDependencyResolver](http://msdn.microsoft.com/en-us/library/system.web.mvc.idependencyresolver.aspx). I will change the example used in this [post](http://blog.kennytordeur.be/post/2011/04/aspnet-mvc-and-unity.html) to use the IDependencyResolver.
+In ASP.NET MVC 3 their is some build in abstraction for doing dependency injection ( [IDependencyResolver](http://msdn.microsoft.com/en-us/library/system.web.mvc.idependencyresolver.aspx). I will change the example used in this [post]({{site.url}}/post/2011/04/aspnet-mvc-and-unity) to use the IDependencyResolver.
 
 ##the IDependencyResolver
 

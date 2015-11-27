@@ -12,7 +12,7 @@ alias: ["/post/Aspnet-MVC-MEF-Per-Request-Lifetime", "/post/aspnet-mvc-mef-per-r
 Like the title says, i want to use MEF in an Asp.Net MVC application and the lifetime of the object has to be exactly the same as the lifetime of the request. In short, i want 1 single unique object that is recreated per request.
 
 
-In MEF there is a way to control the lifetime of the created object. This is specified the PartCreationPolicy attribute that you can use to decorate the object. In my test project i installed the nuget package i created in this [post](http://blog.kennytordeur.be/post/2012/11/nuget-package-integrated-mef-in-aspnet) to incorporate MEF in an Asp.net MVC application. I also created an object called MyCustomObject with an interface IMyCustomObject. This object has only one property called Created that contains the date when the object is created. In the constructor of that object i have but an thread.sleep. This way i am sure that the Created property will be different for every created object.
+In MEF there is a way to control the lifetime of the created object. This is specified the PartCreationPolicy attribute that you can use to decorate the object. In my test project i installed the nuget package i created in this [post]({{site.url}}/post/2012/11/28/nuget-package-integrated-mef-in-aspnet) to incorporate MEF in an Asp.net MVC application. I also created an object called MyCustomObject with an interface IMyCustomObject. This object has only one property called Created that contains the date when the object is created. In the constructor of that object i have but an thread.sleep. This way i am sure that the Created property will be different for every created object.
 
 ```csharp
   public interface IMyCustomObject
