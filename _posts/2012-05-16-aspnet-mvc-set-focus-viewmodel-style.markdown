@@ -8,10 +8,12 @@ categories: ["blog", "archives"]
 tags: ["ASP.NET", "JQuery", "MVC"]
 alias: ["/post/ASPNET-MVC-Set-Focus-ViewModel-Style", "/post/aspnet-mvc-set-focus-viewmodel-style"]
 ---
-<!-- more -->
-{% include imported_disclaimer.html %}
+<!-- more -->
+
+{% include imported_disclaimer.html %}
+
 <p>In a recent Asp.Net MVC project i had to set a focus on a specific control, but it wasn&rsquo;t just a specific control. It was calculate in runtime by some conditions. I didn&rsquo;t just want to create an extra string property on the viewmodel where i could store the id of the control. Off course this would also work but i wanted something safer than those magic strings.</p>
-<p>In one of my previous posts (<a href="http://kennytordeur.blogspot.com/2011/05/aspnet-mvc-where-is-clientid_10.html" target="_blank">Where is the ClientID?</a>), i was able to determine the Id that is created by the HtmlHelper to create a textbox, checkbox, &hellip;</p>
+<p>In one of my previous posts [Where is the ClientID?]({{site.url}}/post/2011/05/10/aspnet-mvc-where-is-the-clientid), i was able to determine the Id that is created by the HtmlHelper to create a textbox, checkbox, &hellip;</p>
 <pre class="code"><span style="color: blue;">public static class </span><span style="color: #2b91af;">HtmlHelper<br /></span>{<br />    <span style="color: blue;">public static </span><span style="color: #2b91af;">String </span>GetId&lt;TModel,TProperty&gt;( <span style="color: blue;">this </span><span style="color: #2b91af;">HtmlHelper</span>&lt;TModel&gt; htmlHelper, <span style="color: #2b91af;">Expression</span>&lt;<span style="color: #2b91af;">Func</span>&lt;TModel, TProperty&gt;&gt; expression )<br />    {<br />        <span style="color: blue;">return </span><span style="color: #2b91af;">TagBuilder</span>.CreateSanitizedId(<span style="color: #2b91af;">ExpressionHelper</span>.GetExpressionText(expression));<br />    }<br />}</pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
