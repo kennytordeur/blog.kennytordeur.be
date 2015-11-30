@@ -11,7 +11,7 @@ description: "In the post I'll show you how easy it is to use dependency injecti
 alias: ["/post/2015-10-15-Taghelpers-and-DI.markdown"]
 ---
 
-I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
+I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this my previous post [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
 
 ## Creating a service to inject
 ```csharp
