@@ -61,7 +61,7 @@ Fore some reason, the service method must also return Farenheit as property on a
 ```
 
 Off course we also have to modify our service so that it could return a WeatherForeCastExtra object on all the uneven days.
-
+ 
 ```csharp
     public class WeatherForeCastService : IWeatherForeCastService
     {
