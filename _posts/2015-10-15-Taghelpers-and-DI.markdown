@@ -6,11 +6,12 @@ date: 2015-10-15 09:14:00 +0100
 comments: true
 published: true
 categories: ["blog", "archives"]
-tags: ["ASP.NET","taghelper"]
+tags: ["ASP.NET","taghelper","mvc"]
+discription: "In the post I'll show you how easy it is to use dependency injection in the Asp.net mvc tagehelper."
 alias: ["/post/2015-10-15-Taghelpers-and-DI.markdown"]
 ---
 
-I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this [post]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
+I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
 
 ## Creating a service to inject
 ```csharp
