@@ -51,7 +51,7 @@ This is how the WeatherForeCast object looks like.
 Fore some reason, the service method must also return Farenheit as property on all the uneven days. So we decide to create a new class WeatherForeCastExtra that inherits from WeatherForeCast and add the extra property.
 
 
-``````csharp
+```csharp
     [DataContract]
     public class WeatherForeCastExtra: WeatherForeCast
     {        
