@@ -7,7 +7,7 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET","taghelper","mvc"]
-discription: "In the post I'll show you how easy it is to use dependency injection in the Asp.net mvc tagehelper."
+description: "In the post I'll show you how easy it is to use dependency injection in an Asp.net mvc taghelper."
 alias: ["/post/2015-10-15-Taghelpers-and-DI.markdown"]
 ---
 
