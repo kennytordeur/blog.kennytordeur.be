@@ -7,7 +7,7 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["asp.net","mvc"]
-description:"In this post i'll show how you can create a custom taghelper in Asp.net mvc 6."
+description: "In this post i'll show how you can create a custom taghelper in Asp.net mvc 6."
 ---
 
 ##What are taghelpers?
