@@ -6,15 +6,13 @@ date: 2015-10-14 09:14:00 +0100
 comments: true
 published: true
 categories: ["blog", "archives"]
-tags: ["ASP.NET","taghelper"]
-alias: ["/post/2015-10-14-creating-a-custom-taghelper.markdown"]
+tags: ["asp.net","mvc"]
+description:In this post i'll show how you can create a custom taghelper in Asp.net mvc 6.
 ---
-
-In this post i'll show how you can create a custom taghelper.
 
 ##What are taghelpers?
 
-Basically taghelpers do the same thing as the htmlhelpers we all know. If you use a htmlhelper in your view, you'll see that it is actually C# code. If you would use a taghelper, it would lean more to html than to C# code.
+Basically [taghelpers](http://docs.asp.net/projects/mvc/en/latest/views/tag-helpers/intro.html "What are taghelpers?") do the same thing as the [htmlhelpers](https://msdn.microsoft.com/en-us/library/system.web.mvc.htmlhelper%28v=vs.118%29.aspx "The HTMLhelper") we all know in Asp.net MVC. If you use a htmlhelper in your view, you'll see that it is actually C# code. If you would use a taghelper, it would lean more to html than to C# code.
 
 ##Defining your taghelper
 Your custom taghelper will need to inherit from the TagHelper base class. This base class defines two virtual methods called Process and ProcessAsync. In these methods you'll write your taghelper logic.
@@ -138,7 +136,7 @@ I've but this in my view.
 
 The intellisense helped me.
 
-![intellisense](http://blog.kennytordeur.be/images/2015-10-14-creating-a-custom-taghelper/intellisense.png)
+![intellisense](http://blog.kennytordeur.be/images/2015-10-14-creating-a-custom-taghelper/intellisense.png "The result")
 
 This is the output when the view is rendered in the browser.
 

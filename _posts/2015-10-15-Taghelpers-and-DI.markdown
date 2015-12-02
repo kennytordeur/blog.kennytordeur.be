@@ -10,7 +10,7 @@ tags: ["asp.net","taghelper","mvc"]
 description: "In the post I'll show you how easy it is to use dependency injection in an Asp.net mvc taghelper."
 ---
 
-I was wondering if you could use Dependency Injection for taghelpers. I'll modify the example used in this my previous post [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper).
+I was wondering if you could use [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection "Dependency Injection") for [taghelper](http://docs.asp.net/projects/mvc/en/latest/views/tag-helpers/intro.html "What are taghelpers?"). I'll modify the example used in this my previous post [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper "Creating a custom taghelper").
 
 ## Creating a service to inject
 ```csharp
@@ -28,7 +28,7 @@ I was wondering if you could use Dependency Injection for taghelpers. I'll modif
     }
 ```
 
-Register this class in the DI-system of Asp.net. Add it to services collection in the ConfigureServices method from the Startup class.
+Register this class in the Dependency Injection system of Asp.net. Add it to services collection in the ConfigureServices method from the Startup class.
 
 ```csharp
   public void ConfigureServices(IServiceCollection services)
@@ -37,7 +37,7 @@ Register this class in the DI-system of Asp.net. Add it to services collection i
   }
 ```
 
-## Modifiying the taghelper
+## Modifiying the Asp.Net mvc taghelper
 ```csharp
     [TargetElement("Person")]
     public class MyTagHelper : TagHelper
@@ -59,9 +59,9 @@ Register this class in the DI-system of Asp.net. Add it to services collection i
 ```
 
 ##Testing
-When I run the application, the DI-system will also inject dependencies for taghelpers.
+When I run the application, the DI-system will also inject dependencies for my custom taghelper.
 
-![The result]({{site.baseurl}}/images/2015-10-15-Taghelpers and DI/result.png)
+![The result]({{site.baseurl}}/images/2015-10-15-Taghelpers and DI/result.png "The result")
 
 
 
