@@ -37,7 +37,7 @@ Register this class in the Dependency Injection system of Asp.net. Add it to ser
   }
 ```
 
-## Modifiying the Asp.Net mvc taghelper
+## Modifying the Asp.Net mvc taghelper
 ```csharp
     [TargetElement("Person")]
     public class MyTagHelper : TagHelper
