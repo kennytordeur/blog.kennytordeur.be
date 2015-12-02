@@ -12,7 +12,7 @@ description: "In the post I'll show you how easy it is to use dependency injecti
 
 
 
-I was wondering if you could use [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection "Dependency Injection") for [taghelper](http://docs.asp.net/projects/mvc/en/latest/views/tag-helpers/intro.html "What are taghelpers?"). I'll modify the example used in this my previous post [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-taghelper "Creating a custom taghelper").
+I was wondering if you could use [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection "Dependency Injection") for [taghelper](http://docs.asp.net/projects/mvc/en/latest/views/tag-helpers/intro.html "What are taghelpers?"). I'll modify the example used in this my previous post [Creating a custom taghelper]({{site.baseurl}}/post/2015/10/14/creating-a-custom-aspnet-mvc-taghelper "Creating a custom taghelper").
 
 ## Creating a service to inject
 ```csharp
