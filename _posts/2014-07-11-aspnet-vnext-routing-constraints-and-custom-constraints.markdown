@@ -6,7 +6,6 @@ comments: true
 published: true
 categories: ["blog", "archives"]
 tags: ["ASP.NET"]
-redirect_from: "/post/aspnet-vnext-routing-constraints-and-custom-constraints"
 alias: ["/post/ASPNET-VNext-Routing-constraints-and-custom-constraints", "/post/aspnet-vnext-routing-constraints-and-custom-constraints"]
 ---
 In ASP.NET VNext the routing system has been unified and it is build as a middleware component that easily can be plugged in. This routing system can be found in the “Microsoft.AspNet.Routing” Nuget Package or add [github](https://github.com/aspnet/Routing) if you want to work with the source code.
