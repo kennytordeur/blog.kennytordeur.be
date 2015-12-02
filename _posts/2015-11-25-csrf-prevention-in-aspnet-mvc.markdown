@@ -5,7 +5,7 @@ title: "CSRF prevention in asp.net mvc 6"
 date: 2015-11-25 14:45:00 +0100
 comments: true
 published: true
-description: This article explains how asp.net mvc 6 can prevent Cross-Site Request Forgery (CSRF). 
+description: "This article explains how asp.net mvc 6 can prevent Cross-Site Request Forgery (CSRF)." 
 categories: ["blog", "archives"]
 tags: ["asp.net","mvc"]
 ---
